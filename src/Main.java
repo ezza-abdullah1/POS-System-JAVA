@@ -1,9 +1,14 @@
+import javax.swing.SwingUtilities;
 
-import view.SplashView;
+import controller.CashierController;
+import view.CashierView;
 
 public class Main {
     public static void main(String[] args) {
-        SplashView splash = new SplashView();
-       // splash.showSplash();
+        SwingUtilities.invokeLater(() -> {
+            CashierView view = new CashierView();
+            CashierController controller = new CashierController(view);
+            view.setVisible(true);
+        });
     }
 }
