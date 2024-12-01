@@ -9,6 +9,7 @@ import dao.ProductDAO;
 import model.CartItem;
 import model.Product;
 import view.CashierView;
+import dao.BillingDAO;
 import utils.*;
 import java.awt.event.KeyEvent;
 import java.io.PrintWriter;
@@ -152,20 +153,27 @@ public class CashierController {
 
     private void checkout() {
         try {
+            // Step 1: Save the bill to the database
+            String metroCard = (lastUsedMetroCard != null) ? lastUsedMetroCard : "No Metro Card";
+
+            // Save to the billing table
+            BillingDAO billingDAO = new BillingDAO();
+            billingDAO.saveBill(subtotal, overallDiscount, totalTax, total, metroCard);
+
+            // Step 2: Handle metro card payment if used
             if (lastUsedMetroCard != null) {
-                // Calculate points to add (1 point per 100 Rs)
-                int pointsToAdd = (int) (total / 100);
+                int pointsToAdd = (int) (total / 30);  // Points earned based on total amount
                 try {
                     productDAO.addPointsToMetroCard(lastUsedMetroCard, pointsToAdd);
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(view, "Error adding points to metro card: " + e.getMessage());
                 }
             }
-            
-            // Generate and download bill
+
+            // Step 3: Generate and download the bill
             generateBill();
-            
-            // Reset the screen
+
+            // Step 4: Reset the screen
             cartItems.clear();
             view.clearCart();
             view.resetTotals();
@@ -176,12 +184,15 @@ public class CashierController {
             totalTax = 0.0;
             lastUsedMetroCard = null;
             lastDeductedAmount = 0.0;
-            
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(view, "Error during checkout: " + ex.getMessage());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(view, "Error during checkout: " + ex.getMessage());
         }
     }
- private void generateBill() {
+
+    private void generateBill() {
     
         try {
             String fileName = "bill_" + System.currentTimeMillis() + ".txt";
