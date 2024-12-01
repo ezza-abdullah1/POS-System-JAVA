@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 
 import SuperAdmin.model.BranchModel;
 import SuperAdmin.controller.BranchController;
-import SuperAdmin.model.BranchModel;
 
 public class branchView extends JFrame {
     private JButton addButton;
@@ -118,10 +117,27 @@ public class branchView extends JFrame {
     private void openUpdateBranchScreen() {
         int selectedRow = branchTable.getSelectedRow();
         if (selectedRow != -1) {
+            Object statusObj = tableModel.getValueAt(selectedRow, 6);
+
+            boolean isActive = false;
+            if (statusObj instanceof Boolean) {
+                isActive = (Boolean) statusObj;
+            } else if (statusObj instanceof String) {
+                isActive = Boolean.parseBoolean((String) statusObj);
+            }
+
+            if (!isActive) {
+                JOptionPane.showMessageDialog(this,
+                        "Cannot update an inactive branch. Please activate the branch first.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return; // Prevent further execution
+            }
+
             String branchcode = (String) branchTable.getValueAt(selectedRow, 0);
             new updateBranchView(this, branchController, branchcode, this::refreshTable);
         } else {
-            JOptionPane.showMessageDialog(this, "Please select a customer to update.");
+            JOptionPane.showMessageDialog(this, "Please select a branch to update.");
         }
     }
 
@@ -133,7 +149,7 @@ public class branchView extends JFrame {
         int selectedRow = branchTable.getSelectedRow();
 
         if (selectedRow >= 0) {
-            Object statusObj = tableModel.getValueAt(selectedRow, 6); // Assuming column 6 stores the active status
+            Object statusObj = tableModel.getValueAt(selectedRow, 6);
 
             boolean isActive = false;
             if (statusObj instanceof Boolean) {
@@ -142,7 +158,6 @@ public class branchView extends JFrame {
                 isActive = Boolean.parseBoolean((String) statusObj);
             }
 
-            // Update the button text based on the branch's current status
             if (isActive) {
                 activateButton.setText("Deactivate Branch");
             } else {
@@ -158,18 +173,15 @@ public class branchView extends JFrame {
             String branchCodeStr = (String) tableModel.getValueAt(selectedRow, 0);
             int branchCode = Integer.parseInt(branchCodeStr);
 
-            // Retrieve the current status of the selected branch (active/inactive)
-            Object statusObj = tableModel.getValueAt(selectedRow, 6); // Assuming column 6 stores the active status
+            Object statusObj = tableModel.getValueAt(selectedRow, 6);
 
             boolean isActive = false;
             if (statusObj instanceof Boolean) {
                 isActive = (Boolean) statusObj;
             } else if (statusObj instanceof String) {
-                // If status is a String like "true" or "false"
                 isActive = Boolean.parseBoolean((String) statusObj);
             }
 
-            // Ask for confirmation before toggling the status
             String action = isActive ? "deactivate" : "activate";
             int confirmation = JOptionPane.showConfirmDialog(
                     this,
@@ -179,18 +191,14 @@ public class branchView extends JFrame {
                     JOptionPane.WARNING_MESSAGE);
 
             if (confirmation == JOptionPane.YES_OPTION) {
-                // Toggle the active status
                 boolean newStatus = !isActive;
 
-                // Call the controller to update the branch's active status
                 try {
                     String resultMessage = branchController.updateBranchStatus(branchCode, newStatus);
 
                     if (resultMessage.equals("Branch status updated successfully.")) {
-                        // Update the table to reflect the new status
                         tableModel.setValueAt(newStatus, selectedRow, 6);
 
-                        // Update the button text based on the new status
                         if (newStatus) {
                             activateButton.setText("Deactivate Branch");
                         } else {
@@ -207,11 +215,10 @@ public class branchView extends JFrame {
                             JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                // User canceled the action
                 JOptionPane.showMessageDialog(this, "Action canceled.");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Please select a branch to toggle its activation status.");
+            JOptionPane.showMessageDialog(this, "Please select a branch to change its activation status.");
         }
     }
 

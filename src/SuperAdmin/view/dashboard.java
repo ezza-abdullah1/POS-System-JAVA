@@ -38,7 +38,7 @@ public class dashboard {
         createBranchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new BranchesView();
+                new branchView();
             }
         });
 
