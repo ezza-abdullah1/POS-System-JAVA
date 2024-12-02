@@ -3,11 +3,10 @@ package SuperAdmin.model;
 import db.DatabaseConnection;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement; // Corrected import
+import java.sql.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,7 +157,7 @@ public class BranchModel {
             System.out.println("Error finding branch by code: " + e.getMessage());
         }
 
-        return null; // Return null if no branch is found
+        return null;
     }
 
     public static void saveBranch(BranchModel branch) throws SQLException {
@@ -253,6 +252,26 @@ public class BranchModel {
             e.printStackTrace();
             System.out.println("Error updating branch status: " + e.getMessage());
         }
+    }
+
+    public static List<Integer> getActiveBranchCodes() {
+        List<Integer> activeBranchCodes = new ArrayList<>();
+        String query = "SELECT BranchCode FROM branches WHERE IsActive = '1'";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+                Statement stmt = connection.createStatement();
+                ResultSet resultSet = stmt.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                int branchCode = resultSet.getInt("BranchCode");
+                activeBranchCodes.add(branchCode);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching active branches: " + e.getMessage());
+        }
+
+        return activeBranchCodes;
     }
 
 }
