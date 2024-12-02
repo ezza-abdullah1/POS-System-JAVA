@@ -1,6 +1,6 @@
+//updated cashier ui
 package view;
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -13,7 +13,6 @@ import utils.MetroCardPaymentCallback;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,8 +25,13 @@ public class CashierView extends JFrame {
     private JButton addItemButton, updateButton, deleteButton, checkoutButton;
     private JTable cartTable;
     private DefaultTableModel cartTableModel;
-    private JLabel subtotalLabel, discountLabel, taxLabel, totalLabel, changeLabel;
+    private JLabel subtotalLabel;
+    private JLabel discountLabel;
+    private JLabel taxLabel;
+    public JLabel totalLabel;
+    private JLabel changeLabel;
     private JPanel rightPanel;
+    private JLabel remainingBalanceLabel;
     private static final String[] COLUMN_NAMES = {
             "Product ID", "Product Name", "Price", "Weight",
             "Discount Amount", "Tax Amount", "Quantity", "Subtotal"
@@ -91,6 +95,7 @@ public class CashierView extends JFrame {
         dateTimeTimer.start();
     }
 
+
     @Override
     public void dispose() {
         if (dateTimeTimer != null) {
@@ -139,10 +144,17 @@ public class CashierView extends JFrame {
         discountLabel = createStyledLabel("Discount: Rs0.00");
         taxLabel = createStyledLabel("Tax: Rs0.00");
         totalLabel = createStyledLabel("Total: Rs0.00");
+        remainingBalanceLabel = createStyledLabel("Remaining Balance: Rs0.00");
+
         changeLabel = createStyledLabel("Change: Rs0.00");
         cashAmountLabel = createStyledLabel("Cash Amount: Rs0.00");
 
+
         setupLayout();
+    }
+    public void updateFinalTotal(String total) {
+        remainingBalanceLabel.setText("Remaining Balance: Rs" + total);
+        remainingBalanceLabel.setVisible(true);
     }
 
     private JTextField createStyledTextField(int columns) {
@@ -235,6 +247,7 @@ public class CashierView extends JFrame {
     public void setMetroCardPaymentCallback(MetroCardPaymentCallback callback) {
         this.metroCardPaymentCallback = callback;
     }
+
     private void setupLayout() {
         // Header panel with store information
         JPanel headerPanel = new JPanel();
@@ -311,6 +324,7 @@ public class CashierView extends JFrame {
                 discountLabel, Box.createVerticalStrut(10),
                 taxLabel, Box.createVerticalStrut(10),
                 totalLabel, Box.createVerticalStrut(20),
+                remainingBalanceLabel, Box.createVerticalStrut(10),
                 cashAmountLabel, Box.createVerticalStrut(10),
                 cashField, Box.createVerticalStrut(10),
                 changeLabel, Box.createVerticalStrut(20),
@@ -332,10 +346,12 @@ public class CashierView extends JFrame {
     public void clearCart() {
         cartTableModel.setRowCount(0);
     }
+
     public void resetTotals() {
-        updateTotals("0.00", "0.00", "0.00", "0.00");
-        setChange("0.00");
-        cashAmountLabel.setText("Cash Amount: Rs0.00");
+
+
+        remainingBalanceLabel.setText("Remaining Balance: Rs0.00");
+        remainingBalanceLabel.setVisible(false);
     }
 
     // Getters for input values
@@ -602,3 +618,4 @@ public class CashierView extends JFrame {
         });
     }
 }
+

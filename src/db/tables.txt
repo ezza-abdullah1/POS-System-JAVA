@@ -1,0 +1,40 @@
+-- Table: Cards
+CREATE TABLE Cards (
+    card_id INT NOT NULL AUTO_INCREMENT,
+    card_number VARCHAR(16) NOT NULL UNIQUE,
+    security_code VARCHAR(4) NOT NULL,
+    balance DECIMAL(10,2) NOT NULL,
+    PRIMARY KEY (card_id)
+);
+
+-- Table: Products
+CREATE TABLE Products (
+    product_id VARCHAR(10) NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    tax DECIMAL(5,2) NOT NULL,
+    weight DECIMAL(10,2) NOT NULL,
+    PRIMARY KEY (product_id)
+);
+
+-- Table: Customers
+CREATE TABLE Customers (
+    customer_key INT NOT NULL,
+    holder_name VARCHAR(100),
+    points INT DEFAULT 0,
+    date_issued DATE,
+    metCrdNum VARCHAR(50),
+    PRIMARY KEY (customer_key)
+);
+
+-- Table: Billing
+CREATE TABLE Billing (
+    id INT NOT NULL AUTO_INCREMENT,
+    subtotal DECIMAL(10,2) NOT NULL,
+    discount DECIMAL(10,2) NOT NULL,
+    tax DECIMAL(10,2) NOT NULL,
+    total DECIMAL(10,2) NOT NULL,
+    metro_card VARCHAR(255),
+    payment_method VARCHAR(20),
+    PRIMARY KEY (id)
+);
