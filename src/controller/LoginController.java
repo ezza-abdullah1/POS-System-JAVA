@@ -7,9 +7,12 @@ import dao.LoginDAO;
 
 import javax.swing.*;
 import BranchManager.view.DashboardBR;
+import DataEntryOperator.view.MainDashboard;
+import SuperAdmin.view.dashboard;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
 
 public class LoginController {
     private LoginView loginView;
@@ -60,6 +63,8 @@ public class LoginController {
 
                 if (!newPassword.equals(confirmPassword)) {
                     JOptionPane.showMessageDialog(changePasswordView, "Passwords do not match!");
+                } else if (!isValidPassword(newPassword)) {
+                    JOptionPane.showMessageDialog(changePasswordView, "Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.");
                 } else {
                     boolean isUpdated = loginDAO.updatePassword(email, newPassword);
                     if (isUpdated) {
@@ -73,10 +78,22 @@ public class LoginController {
         });
     }
 
+    private boolean isValidPassword(String password) {
+        if (password.length() < 8) {
+            return false;
+        }
+
+        Pattern upperCasePattern = Pattern.compile("[A-Z]");
+        Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9]");
+
+        return upperCasePattern.matcher(password).find() && specialCharacterPattern.matcher(password).find();
+    }
+
+
     private void navigateToDashboard(String role) {
         switch (role) {
             case "SuperAdmin":
-                // new SuperAdminDashboard().setVisible(true);
+                 new dashboard();
                 break;
             case "BranchManager":
                 new DashboardBR();
@@ -85,7 +102,7 @@ public class LoginController {
                 // new CashierDashboard().setVisible(true);
                 break;
             case "DataEntryOperator":
-                // new DEODashboard().setVisible(true);
+                new MainDashboard();
                 break;
             default:
                 JOptionPane.showMessageDialog(loginView, "Role not found!");

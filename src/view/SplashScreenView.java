@@ -1,6 +1,10 @@
 package view;
 
 import javax.swing.*;
+
+import controller.LoginController;
+import dao.LoginDAO;
+
 import java.awt.*;
 import utils.RoundedButton;
 import java.util.Timer;
@@ -132,7 +136,9 @@ public class SplashScreenView {
     }
 
     public static void launchLoginScreen() {
-        
-        new LoginView(selectedRole).setVisible(true);
+         LoginView loginView = new LoginView(selectedRole);
+        LoginDAO loginDAO = new LoginDAO();
+        new LoginController(loginView, loginDAO);
+        loginView.setVisible(true);
     }
 }
