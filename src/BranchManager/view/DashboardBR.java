@@ -32,7 +32,7 @@ public class DashboardBR {
         frame.add(headerLabel, BorderLayout.NORTH);
 
         // Main Panel with GridBagLayout
-        JPanel mainPanel = new JPanel(new GridBagLayout());
+        JPanel mainPanel = new JPanel(new GridBagLayout()); 
         mainPanel.setOpaque(false); // Transparent to show frame background
         GridBagConstraints gbc = new GridBagConstraints();
 

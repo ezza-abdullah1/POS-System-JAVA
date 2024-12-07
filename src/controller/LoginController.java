@@ -1,6 +1,6 @@
 package controller;
 
-import model.User;
+import model.UserModel;
 import view.LoginView;
 import view.ChangePasswordView;
 import dao.LoginDAO;
@@ -34,7 +34,7 @@ public class LoginController {
         String role = loginView.getRole();
         System.out.println("here in au");
 
-        User user = loginDAO.authenticateUser(email, password, role);
+        UserModel user = loginDAO.authenticateUserModel(email, password, role);
 
         if (user != null) {
             if ("123".equals(password)) {
