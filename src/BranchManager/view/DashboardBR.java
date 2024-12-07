@@ -16,7 +16,8 @@ public class DashboardBR {
         // Create the main frame
         JFrame frame = new JFrame("Branch Manager Dashboard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(700, 600); // Adjusted size
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setSize(screenSize.width / 2, screenSize.height / 2);
         frame.setLocationRelativeTo(null); // Center the frame
         frame.setLayout(new BorderLayout());
         frame.getContentPane().setBackground(new Color(240, 248, 255)); // Light blue background
@@ -82,4 +83,5 @@ public class DashboardBR {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(DashboardBR::new);
     }
+
 }
