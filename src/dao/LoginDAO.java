@@ -13,7 +13,7 @@ public class LoginDAO {
 
     public UserModel authenticateUserModel(String email, String password, String role) {
         Connection conn = DatabaseConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM UserModels WHERE Email = ? AND Password = ? AND Role = ?";
+        String sql = "SELECT * FROM Users WHERE Email = ? AND Password = ? AND Role = ?";
 
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -44,7 +44,7 @@ public class LoginDAO {
 
     public boolean updatePassword(String email, String newPassword) {
         Connection conn = DatabaseConnection.getInstance().getConnection();
-        String sql = "UPDATE UserModels SET Password = ? WHERE Email = ?";
+        String sql = "UPDATE Users SET Password = ? WHERE Email = ?";
 
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
