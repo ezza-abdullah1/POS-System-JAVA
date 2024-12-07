@@ -8,15 +8,15 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class LoginView extends JFrame {
-    private JTextField emailField;
-    private JPasswordField passwordField;
+public class ChangePasswordView extends JFrame {
+    private JPasswordField newPasswordField;
+    private JPasswordField confirmpasswordField;
     private String role;
     private Color primaryColor = new Color(63, 81, 181);
     private Color hoverColor = new Color(92, 107, 192);
-    private RoundedButton loginButton;
+    private RoundedButton saveButton;
 
-    public LoginView(String selectedRole) {
+    public ChangePasswordView(String selectedRole) {
         this.role = selectedRole; // Set the role from the SplashScreenView
         setTitle("POS System - Login");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -55,7 +55,7 @@ public class LoginView extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(logoLabel, gbc);
-        panel.setPreferredSize(new Dimension(getWidth() / 2, getHeight()));
+        panel.setPreferredSize(new Dimension(getWidth() / 2 - 50, getHeight()));
         return panel;
     }
 
@@ -90,8 +90,8 @@ public class LoginView extends JFrame {
         gbc.insets = new Insets(15, 10, 15, 10); // Adds space between components
     
         // Login Title
-        JLabel titleLabel = new JLabel("         Login");
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 34));
+        JLabel titleLabel = new JLabel("Change Password...");
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
         gbc.gridwidth = 2;
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -99,42 +99,42 @@ public class LoginView extends JFrame {
         loginFormPanel.add(titleLabel, gbc);
     
         // Email Label and TextField
-        JLabel emailLabel = new JLabel("Email:");
+        JLabel emailLabel = new JLabel("New Password:");
         emailLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         gbc.gridwidth = 1;
         gbc.gridx = 0;
         gbc.gridy = 2;
         loginFormPanel.add(emailLabel, gbc);
     
-        emailField = new JTextField();
-        emailField.setPreferredSize(new Dimension(200, 30));
-        emailField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        emailField.setBorder(BorderFactory.createLineBorder(primaryColor));
+        newPasswordField = new JPasswordField();
+        newPasswordField.setPreferredSize(new Dimension(200, 30));
+        newPasswordField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        newPasswordField.setBorder(BorderFactory.createLineBorder(primaryColor));
         gbc.gridx = 1;
-        loginFormPanel.add(emailField, gbc);
+        loginFormPanel.add(newPasswordField, gbc);
     
         // Password Label and PasswordField
-        JLabel passwordLabel = new JLabel("Password:");
+        JLabel passwordLabel = new JLabel("Confirm Password:");
         passwordLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         gbc.gridx = 0;
         gbc.gridy = 3;
         loginFormPanel.add(passwordLabel, gbc);
     
-        passwordField = new JPasswordField();
-        passwordField.setPreferredSize(new Dimension(200, 30));
-        passwordField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        passwordField.setBorder(BorderFactory.createLineBorder(primaryColor));
+        confirmpasswordField = new JPasswordField();
+        confirmpasswordField.setPreferredSize(new Dimension(200, 30));
+        confirmpasswordField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        confirmpasswordField.setBorder(BorderFactory.createLineBorder(primaryColor));
         gbc.gridx = 1;
-        loginFormPanel.add(passwordField, gbc);
+        loginFormPanel.add(confirmpasswordField, gbc);
     
         // Login Button (Centered)
-        loginButton = new RoundedButton("Login");
-        loginButton.setPreferredSize(new Dimension(100, 40));
+        saveButton = new RoundedButton("Save");
+        saveButton.setPreferredSize(new Dimension(100, 40));
         gbc.gridwidth = 2;
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.CENTER; // Center the button
-        loginFormPanel.add(loginButton, gbc);
+        loginFormPanel.add(saveButton, gbc);
     
         // Add login form panel to the main panel
         panel.add(loginFormPanel);
@@ -143,19 +143,20 @@ public class LoginView extends JFrame {
     }
     
     public String getEmail() {
-        return emailField.getText();
+        return newPasswordField.getText();
     }
 
-    public String getPassword() {
-        return new String(passwordField.getPassword());
+    public String getNewPassword() {
+        return new String(newPasswordField.getPassword());
+    }
+    public String getConfirmPassword(){
+        return new String(confirmpasswordField.getPassword());
+
     }
 
-    public String getRole() {
-        return role;
-    }
 
-    public void addLoginButtonListener(ActionListener listener) {
-        loginButton.addActionListener(listener);
+    public void addSaveButtonListener(ActionListener listener) {
+        saveButton.addActionListener(listener);
     }
 
     // Navigate back to SplashScreen
@@ -168,7 +169,7 @@ public class LoginView extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             // Instantiate the LoginView with a role (Example: "BRANCHMANAGER")
-            new LoginView("BranchManager").setVisible(true);
+            new ChangePasswordView("BranchManager").setVisible(true);
         });
     }
 }
