@@ -14,9 +14,9 @@ public class CartItem {
     }
 
     public void calculateAmounts() {
-        this.discountAmount = product.getPrice() * (product.getDiscount() / 100);
-        this.taxAmount = product.getPrice() * (product.getTax() / 100);
-        double priceAfterDiscount = product.getPrice() - discountAmount;
+        this.discountAmount = product.getSalePrice() * (product.getDiscount() / 100);
+        this.taxAmount = product.getSalePrice() * (product.getTax() / 100);
+        double priceAfterDiscount = product.getSalePrice() - discountAmount;
         this.subtotal = (priceAfterDiscount + taxAmount) * quantity;
     }
 
