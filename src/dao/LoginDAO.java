@@ -1,8 +1,7 @@
 package dao;
 
-import model.User;
+import model.UserModel;
 import java.sql.*;
-import model.User;
 import utils.DatabaseConnection;
 
 import java.sql.Connection;
@@ -12,9 +11,9 @@ import java.sql.SQLException;
 
 public class LoginDAO {
 
-    public User authenticateUser(String email, String password, String role) {
+    public UserModel authenticateUserModel(String email, String password, String role) {
         Connection conn = DatabaseConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM Users WHERE Email = ? AND Password = ? AND Role = ?";
+        String sql = "SELECT * FROM UserModels WHERE Email = ? AND Password = ? AND Role = ?";
 
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -24,18 +23,18 @@ public class LoginDAO {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                User user = new User();
-                user.setUserID(rs.getInt("UserID"));
-                user.setName(rs.getString("Name"));
-                user.setEmail(rs.getString("Email"));
-                user.setPassword(rs.getString("Password"));
-                user.setRole(rs.getString("Role"));
-                user.setBranchCode(rs.getInt("BranchCode"));
-                user.setSalary(rs.getDouble("Salary"));
-                user.setEmpNumber(rs.getInt("EmpNumber"));
-                user.setCreatedAt(rs.getTimestamp("CreatedAt"));
-                user.setUpdatedAt(rs.getTimestamp("UpdatedAt"));
-                return user;
+                UserModel UserModel = new UserModel();
+                UserModel.setUserID(rs.getInt("UserModelID"));
+                UserModel.setName(rs.getString("Name"));
+                UserModel.setEmail(rs.getString("Email"));
+                UserModel.setPassword(rs.getString("Password"));
+                UserModel.setRole(rs.getString("Role"));
+                UserModel.setBranchCode(rs.getInt("BranchCode"));
+                UserModel.setSalary(rs.getDouble("Salary"));
+                UserModel.setEmpNumber(rs.getInt("EmpNumber"));
+                UserModel.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                UserModel.setUpdatedAt(rs.getTimestamp("UpdatedAt"));
+                return UserModel;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -45,7 +44,7 @@ public class LoginDAO {
 
     public boolean updatePassword(String email, String newPassword) {
         Connection conn = DatabaseConnection.getInstance().getConnection();
-        String sql = "UPDATE Users SET Password = ? WHERE Email = ?";
+        String sql = "UPDATE UserModels SET Password = ? WHERE Email = ?";
 
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);

@@ -4,6 +4,8 @@ import SuperAdmin.model.BranchModel;
 import SuperAdmin.view.AddBranchManagerView;
 import SuperAdmin.view.BranchManagerView;
 import SuperAdmin.view.branchView;
+import view.AddUserView;
+
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
@@ -17,6 +19,16 @@ public class BranchController {
     }
 
     public void loadActiveBranchesToView(AddBranchManagerView view) {
+        // Get active branch codes from BranchModel and load them into the view
+        List<Integer> activeBranchCodes = BranchModel.getActiveBranchCodes();
+
+        // Add active branches to the combo box in the view
+        for (Integer branchCode : activeBranchCodes) {
+            view.addBranchToComboBox("Branch " + branchCode, branchCode);
+        }
+    }
+
+    public void loadActiveBranchesToView(AddUserView view) {
         // Get active branch codes from BranchModel and load them into the view
         List<Integer> activeBranchCodes = BranchModel.getActiveBranchCodes();
 
