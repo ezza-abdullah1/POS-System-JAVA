@@ -45,14 +45,14 @@ public class dashboard {
         createBranchManagerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // showCreateBranchManagerDialog(frame);
+                new BranchManagerView();
             }
         });
 
         viewReportsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // showReportsDialog(frame);
+                new reportsView();
             }
         });
 
