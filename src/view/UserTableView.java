@@ -24,12 +24,13 @@ public class UserTableView extends JFrame {
 
     public UserTableView(String role) {
         this.role = role;
-        setTitle("Manage " + role + "s");
+        String readableRole = getReadableRole(role);
+        setTitle("Manage " + readableRole + "s");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        JLabel titleLabel = new JLabel("Manage " + role + "s", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Manage " + readableRole + "s", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
         JPanel mainPanel = new JPanel();
@@ -54,10 +55,10 @@ public class UserTableView extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
 
-        addButton = new JButton("Add New " + role);
-        updateButton = new JButton("Update " + role);
-        deleteButton = new JButton("Delete " + role);
-        viewButton = new JButton("View All " + role + "s");
+        addButton = new JButton("Add New " + readableRole);
+        updateButton = new JButton("Update " + readableRole);
+        deleteButton = new JButton("Delete " + readableRole);
+        viewButton = new JButton("View All " + readableRole + "s");
 
         buttonPanel.add(addButton);
         buttonPanel.add(updateButton);
@@ -192,10 +193,19 @@ public class UserTableView extends JFrame {
         loadUserData(role);
     }
 
+    private String getReadableRole(String role) {
+        String[] parts = role.split("(?<!^)(?=[A-Z])");
+        StringBuilder readableRole = new StringBuilder();
+        for (String part : parts) {
+            readableRole.append(part.substring(0, 1).toUpperCase()).append(part.substring(1).toLowerCase()).append(" ");
+        }
+        return readableRole.toString().trim();
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                new UserTableView("Cashier");
+                new UserTableView("DataEntryOperator");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Error initializing the application: " + e.getMessage(),
                         "Application Error", JOptionPane.ERROR_MESSAGE);
