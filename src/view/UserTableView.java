@@ -10,12 +10,13 @@ import java.awt.event.KeyEvent;
 import model.UserModel;
 import controller.UserController;
 import view.UpdateUserView;
+import utils.RoundedButton;
 
-public class UserTableView extends JFrame {
-    private JButton addButton;
-    private JButton updateButton;
-    private JButton deleteButton;
-    private JButton viewButton;
+public class UserTableView extends JFrame { 
+    private RoundedButton addButton;
+    private RoundedButton updateButton;
+    private RoundedButton deleteButton;
+    private RoundedButton viewButton;
     private JTable userTable;
     private DefaultTableModel tableModel;
     private UserController userController = new UserController();
@@ -55,10 +56,16 @@ public class UserTableView extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
 
-        addButton = new JButton("Add New " + readableRole);
-        updateButton = new JButton("Update " + readableRole);
-        deleteButton = new JButton("Delete " + readableRole);
-        viewButton = new JButton("View All " + readableRole + "s");
+        addButton = new RoundedButton("Add New " + readableRole);
+        updateButton = new RoundedButton("Update " + readableRole);
+        deleteButton = new RoundedButton("Delete " + readableRole);
+        viewButton = new RoundedButton("View All " + readableRole + "s");
+        RoundedButton[] buttons = {addButton, updateButton, deleteButton, viewButton};
+
+        Dimension buttonSize = new Dimension(190, 30);
+        Font buttonFont = new Font("Serif", Font.BOLD, 12);
+        setButtonProperties(buttons, buttonSize, buttonFont);
+
 
         buttonPanel.add(addButton);
         buttonPanel.add(updateButton);
@@ -85,6 +92,13 @@ public class UserTableView extends JFrame {
 
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private void setButtonProperties(RoundedButton[] buttons, Dimension size, Font font) {
+        for (RoundedButton button : buttons) {
+            button.setPreferredSize(size);
+            button.setFont(font);
+        }
     }
 
     public void addUserToTable(UserModel user) {
@@ -205,7 +219,7 @@ public class UserTableView extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                new UserTableView("DataEntryOperator");
+                new UserTableView("Cashier");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Error initializing the application: " + e.getMessage(),
                         "Application Error", JOptionPane.ERROR_MESSAGE);
