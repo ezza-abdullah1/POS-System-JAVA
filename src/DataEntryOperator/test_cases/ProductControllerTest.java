@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import DataEntryOperator.controller.ProductController;
-import db.DatabaseConnection;
+import utils.DatabaseConnection;
 
 import java.sql.SQLException;
 import java.sql.Connection;
@@ -41,7 +41,7 @@ public class ProductControllerTest {
                 priceByCarton, tax, weight, quantity);
 
         // Assert
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
                 Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM Product WHERE product_id = '" + productId + "'")) {
 

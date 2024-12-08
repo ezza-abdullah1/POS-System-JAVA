@@ -24,7 +24,7 @@ public class LoginDAO {
 
             if (rs.next()) {
                 UserModel UserModel = new UserModel();
-                UserModel.setUserID(rs.getInt("UserModelID"));
+                UserModel.setUserID(rs.getInt("UserID"));
                 UserModel.setName(rs.getString("Name"));
                 UserModel.setEmail(rs.getString("Email"));
                 UserModel.setPassword(rs.getString("Password"));

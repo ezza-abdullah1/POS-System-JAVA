@@ -11,7 +11,7 @@ import java.util.List;
 
 import DataEntryOperator.controller.VendorController;
 import DataEntryOperator.model.Vendor;
-import db.DatabaseConnection;
+import utils.DatabaseConnection;
 
 public class VendorControllerTest {
     private VendorController vendorController;
@@ -48,7 +48,7 @@ public class VendorControllerTest {
         vendorController.addVendor(name, address, contact);
 
         // Assert
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
                 Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM vendors WHERE vendor_name = '" + name + "'")) {
 

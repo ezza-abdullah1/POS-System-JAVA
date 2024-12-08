@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
 import SuperAdmin.model.UserModel;
-import db.DatabaseConnection;
+import utils.DatabaseConnection;
 
 import java.sql.*;
 
@@ -16,7 +16,8 @@ public class UserModelTest {
     @BeforeEach
     public void setUp() throws SQLException {
         userModel = new UserModel();
-        connection = DatabaseConnection.getConnection(); // Use a mock or in-memory database connection here
+        connection = DatabaseConnection.getInstance().getConnection(); // Use a mock or in-memory database connection
+                                                                       // here
     }
 
     @Test

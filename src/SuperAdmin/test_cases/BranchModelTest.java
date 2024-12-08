@@ -1,7 +1,7 @@
 package SuperAdmin.test_cases;
 
 import SuperAdmin.model.BranchModel;
-import db.DatabaseConnection;
+import utils.DatabaseConnection;
 
 import org.junit.jupiter.api.*;
 
@@ -19,7 +19,7 @@ public class BranchModelTest {
     @BeforeAll
     void setupDatabase() {
         try {
-            connection = DatabaseConnection.getConnection();
+            connection = DatabaseConnection.getInstance().getConnection();
             try (Statement statement = connection.createStatement()) {
                 String checkTableQuery = "SELECT 1 FROM branches LIMIT 1";
                 try {

@@ -2,6 +2,7 @@ package SuperAdmin.view;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -23,20 +24,44 @@ public class BranchManagerView extends JFrame {
 
     public BranchManagerView() {
         setTitle("Manage Branch Managers");
-        setSize(800, 600);
+        setSize(900, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
+        // Header with Image
+        JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new BorderLayout());
+        headerPanel.setBackground(new Color(70, 130, 180));
+
+        // Full-Width Image
+        ImageIcon headerIcon = new ImageIcon("src\\imgs\\Logo_METRO.svg.png");
+        Image scaledImage = headerIcon.getImage().getScaledInstance(getWidth(), 100, Image.SCALE_SMOOTH);
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Title Label
         JLabel titleLabel = new JLabel("Manage Branch Managers", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
+        titleLabel.setForeground(Color.WHITE);
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        // Add components to the header
+        headerPanel.add(imageLabel, BorderLayout.NORTH);
+        headerPanel.add(titleLabel, BorderLayout.SOUTH);
 
+        // Side Panel (Button Panel)
+        JPanel sidePanel = new JPanel();
+        sidePanel.setLayout(new GridLayout(4, 1, 10, 10));
+        sidePanel.setBackground(new Color(70, 130, 160));
+        sidePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Search Panel
         JPanel searchPanel = new JPanel();
         searchPanel.setLayout(new FlowLayout());
+        searchPanel.setBackground(new Color(70, 130, 160));
 
         JLabel searchLabel = new JLabel("Search:");
+        searchLabel.setForeground(Color.WHITE);
+        searchLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
         searchField = new JTextField(20);
         searchField.setToolTipText("Search branch managers...");
         searchField.addKeyListener(new KeyAdapter() {
@@ -49,40 +74,47 @@ public class BranchManagerView extends JFrame {
         searchPanel.add(searchLabel);
         searchPanel.add(searchField);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout());
-
+        // Buttons
         addButton = new RoundedButton("Add New Branch Manager");
         updateButton = new RoundedButton("Update Branch Manager");
         deleteButton = new RoundedButton("Delete Branch Manager");
         viewButton = new RoundedButton("View All Branch Managers");
-        RoundedButton[] buttons = { addButton, updateButton, deleteButton, viewButton };
 
-        Dimension buttonSize = new Dimension(190, 30);
-        Font buttonFont = new Font("Serif", Font.BOLD, 12);
-        setButtonProperties(buttons, buttonSize, buttonFont);
+        RoundedButton[] buttons = {addButton, updateButton, deleteButton, viewButton};
+        setButtonProperties(buttons);
 
-        buttonPanel.add(addButton);
-        buttonPanel.add(updateButton);
-        buttonPanel.add(deleteButton);
-        buttonPanel.add(viewButton);
+        for (RoundedButton button : buttons) {
+            sidePanel.add(button);
+        }
 
-        mainPanel.add(searchPanel);
-        mainPanel.add(buttonPanel);
-
+        // Table
         tableModel = new DefaultTableModel(
-                new String[] { "Name", "Email", "BranchCode", "Salary", "EmpNumber", "AppointedOn", "UpdatedAt" }, 0) {
+                new String[]{"Name", "Email", "BranchCode", "Salary", "EmpNumber", "AppointedOn", "UpdatedAt"},
+                0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // This makes all cells in the table uneditable
+                return false;
             }
         };
+        
         branchManagerTable = new JTable(tableModel);
+        branchManagerTable.setFillsViewportHeight(true);
+        branchManagerTable.setRowHeight(25);
+        
+        JTableHeader tableHeader = branchManagerTable.getTableHeader();
+        tableHeader.setFont(new Font("SansSerif", Font.BOLD, 20));
+        tableHeader.setBackground(new Color(25, 25, 130));
+        tableHeader.setForeground(Color.WHITE);
+        branchManagerTable.setTableHeader(tableHeader);
+        
         JScrollPane scrollPane = new JScrollPane(branchManagerTable);
-        add(titleLabel, BorderLayout.NORTH);
-        add(mainPanel, BorderLayout.CENTER);
-        add(scrollPane, BorderLayout.SOUTH);
 
+        // Add components to the frame
+        add(headerPanel, BorderLayout.NORTH);
+        add(sidePanel, BorderLayout.WEST);
+        add(scrollPane, BorderLayout.CENTER);
+
+        // Event Listeners
         addButton.addActionListener(e -> openAddBranchManagerScreen());
         updateButton.addActionListener(e -> openUpdateBranchManagerScreen());
         deleteButton.addActionListener(e -> deleteSelectedBranchManager());
@@ -92,10 +124,14 @@ public class BranchManagerView extends JFrame {
         setVisible(true);
     }
 
-    private void setButtonProperties(RoundedButton[] buttons, Dimension size, Font font) {
+    private void setButtonProperties(RoundedButton[] buttons) {
         for (RoundedButton button : buttons) {
-            button.setPreferredSize(size);
-            button.setFont(font);
+            button.setFont(new Font("SansSerif", Font.BOLD, 14));
+            button.setBackground(new Color(70, 130, 180));
+            button.setForeground(Color.WHITE);
+            button.setFocusPainted(false);
+            button.setPreferredSize(new Dimension(button.getPreferredSize().width, 
+                button.getPreferredSize().height - 28));
         }
     }
 
