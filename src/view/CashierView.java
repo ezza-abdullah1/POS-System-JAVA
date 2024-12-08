@@ -113,24 +113,29 @@ public class CashierView extends JFrame {
 
     private JPanel createBackgroundPanel() {
         return new JPanel() {
+            private Image backgroundImage = new ImageIcon("src\\imgs\\Logo_METRO.svg.png").getImage();
+
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                // Create a gradient background
+
+                // Draw background image
+                if (backgroundImage != null) {
+                    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                }
+
+                // Create semi-transparent overlay
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
-                // Create semi-transparent overlay
-                Color startColor = new Color(255, 255, 255, 230);
-                Color endColor = new Color(255, 255, 255, 200);
-                GradientPaint gp = new GradientPaint(0, 0, startColor, 0, getHeight(), endColor);
-                g2d.setPaint(gp);
+                // White semi-transparent overlay
+                Color overlayColor = new Color(255, 255, 255, 110);
+                g2d.setColor(overlayColor);
                 g2d.fillRect(0, 0, getWidth(), getHeight());
                 g2d.dispose();
             }
         };
     }
-
     private void initializeComponents() {
         // Initialize input fields with modern styling
         productIdField = createStyledTextField(10);
@@ -144,7 +149,7 @@ public class CashierView extends JFrame {
         deleteButton = createStyledButton("Delete Item", new Color(231, 76, 60));
         // Initialize Metro Card button
         metroCardButton = createStyledButton("Pay with Metro Card", new Color(79, 70, 229));
-        metroCardButton.setVisible(false); // Initially hidden until checkout
+        metroCardButton.setVisible(true); // Initially hidden until checkout
         checkoutButton = createStyledButton("Checkout", new Color(46, 204, 113));
 
         // Initialize table with modern styling
@@ -209,7 +214,6 @@ public class CashierView extends JFrame {
         label.setForeground(TEXT_COLOR);
         return label;
     }
-
     private void initializeTable() {
         cartTableModel = new DefaultTableModel(COLUMN_NAMES, 0) {
             @Override
@@ -226,16 +230,25 @@ public class CashierView extends JFrame {
                     ((JComponent) comp).setOpaque(true);
                 }
                 if (isCellSelected(row, column)) {
-                    comp.setBackground(ACCENT_COLOR);
+                    comp.setBackground(new Color(ACCENT_COLOR.getRed(), ACCENT_COLOR.getGreen(), ACCENT_COLOR.getBlue(), 200));
                     comp.setForeground(Color.WHITE);
                 } else {
-                    // Alternating yellow and white rows
-                    comp.setBackground(row % 2 == 0 ? Color.WHITE : new Color(255, 253, 112)); // Light yellow
+                    // Semi-transparent alternating rows
+                    comp.setBackground(row % 2 == 0 ?
+                            new Color(255, 255, 255, 200) :
+                            new Color(255, 253, 112, 200));
                     comp.setForeground(TEXT_COLOR);
                 }
                 return comp;
             }
         };
+
+        // Set preferred column widths (1 cm ≈ 38 pixels)
+        int[] columnWidths = {138, 138, 138, 138, 138, 138, 138, 138};
+        for (int i = 0; i < columnWidths.length; i++) {
+            cartTable.getColumnModel().getColumn(i).setPreferredWidth(columnWidths[i]);
+            cartTable.getColumnModel().getColumn(i).setMinWidth(columnWidths[i]);
+        }
 
         cartTable.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         cartTable.setRowHeight(40);
@@ -243,13 +256,15 @@ public class CashierView extends JFrame {
         cartTable.setShowGrid(false);
         cartTable.setShowHorizontalLines(true);
         cartTable.setGridColor(new Color(229, 231, 235));
+        cartTable.setOpaque(false);
 
         JTableHeader header = cartTable.getTableHeader();
         header.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 14));
-        header.setBackground(Color.WHITE);
+        header.setBackground(new Color(255, 255, 255, 200));
         header.setForeground(TEXT_COLOR);
         header.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, ACCENT_COLOR));
         header.setPreferredSize(new Dimension(header.getPreferredSize().width, 45));
+        header.setOpaque(false);
     }
 
     public void setMetroCardPaymentCallback(MetroCardPaymentCallback callback) {
@@ -334,14 +349,47 @@ public class CashierView extends JFrame {
     }
     private void setupLayout() {
         // Header panel with store information
-        JPanel headerPanel = new JPanel();
+
+
+        JPanel headerPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setColor(new Color(255, 255, 255, 180));
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+        };
+        headerPanel.setOpaque(false);
+        JPanel topPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setColor(new Color(255, 255, 255, 180));
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+        };
+        topPanel.setOpaque(false);
+
+        rightPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setColor(new Color(255, 255, 255, 180));
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+        };
+        rightPanel.setOpaque(false);
+
         headerPanel.setLayout(new GridBagLayout());
         headerPanel.setOpaque(true);
         headerPanel.setBackground(HEADER_BG_COLOR);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Add header image
-        ImageIcon headerIcon = new ImageIcon("src/main/resources/Logo_METRO.svg.png"); // Replace with actual path
+        ImageIcon headerIcon = new ImageIcon("src/imgs/Logo_METRO.svg.png"); // Replace with actual path
         JLabel headerImageLabel = new JLabel(headerIcon);
         headerImageLabel.setPreferredSize(new Dimension(50, 50)); // Adjust size as needed
         GridBagConstraints gbc = new GridBagConstraints();
@@ -367,9 +415,9 @@ public class CashierView extends JFrame {
         headerPanel.add(centerHeaderPanel, gbc);
 
         // Top panel with product input fields and buttons
-        JPanel topPanel = new JPanel();
+
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        topPanel.setOpaque(false);
+
         topPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
         // Add components to top panel with labels
         topPanel.add(createStyledLabel("Product ID:"));
@@ -387,25 +435,31 @@ public class CashierView extends JFrame {
         combinedTopPanel.add(headerPanel, BorderLayout.NORTH);
         combinedTopPanel.add(topPanel, BorderLayout.CENTER);
         add(combinedTopPanel, BorderLayout.NORTH);
-        // Rest of the layout remains the same
-        JScrollPane scrollPane = new JScrollPane(cartTable);
+        JScrollPane scrollPane = new JScrollPane(cartTable) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setColor(new Color(255, 255, 255, 180));
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+        };
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(0, 30, 10, 30),
                 BorderFactory.createLineBorder(ACCENT_COLOR)
         ));
-
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
         add(scrollPane, BorderLayout.CENTER);
 
         // Right panel setup remains the same
-        rightPanel = new JPanel();
+
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         rightPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(0, 30, 10, 30),
                 BorderFactory.createLineBorder(ACCENT_COLOR)
         ));
-        rightPanel.setOpaque(false);
+
 // Modify the right panel setup to include Metro Card button
         rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
