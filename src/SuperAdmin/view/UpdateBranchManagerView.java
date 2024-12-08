@@ -2,6 +2,7 @@ package SuperAdmin.view;
 
 import SuperAdmin.controller.UserController;
 import SuperAdmin.model.UserModel;
+import utils.RoundedButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,7 @@ public class UpdateBranchManagerView extends JFrame {
     private JTextField branchCodeField;
     private JTextField empNumberField;
     private JTextField salaryField;
-    private JButton updateButton;
+    private RoundedButton updateButton;
     private int branchCode;
     private UserController branchManagerController;
     private BranchManagerView parent;
@@ -46,7 +47,9 @@ public class UpdateBranchManagerView extends JFrame {
         JLabel salaryLabel = new JLabel("Salary:");
         salaryField = new JTextField();
 
-        updateButton = new JButton("Update");
+        updateButton = new RoundedButton("Update");
+        updateButton.setPreferredSize(new Dimension(100, 25));
+
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

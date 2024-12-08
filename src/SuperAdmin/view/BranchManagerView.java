@@ -8,13 +8,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import SuperAdmin.model.UserModel;
+import utils.RoundedButton;
 import SuperAdmin.controller.UserController;
 
 public class BranchManagerView extends JFrame {
-    private JButton addButton;
-    private JButton updateButton;
-    private JButton deleteButton;
-    private JButton viewButton;
+    private RoundedButton addButton;
+    private RoundedButton updateButton;
+    private RoundedButton deleteButton;
+    private RoundedButton viewButton;
     private JTable branchManagerTable;
     private DefaultTableModel tableModel;
     private UserController userController = new UserController();
@@ -51,10 +52,15 @@ public class BranchManagerView extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
 
-        addButton = new JButton("Add New Branch Manager");
-        updateButton = new JButton("Update Branch Manager");
-        deleteButton = new JButton("Delete Branch Manager");
-        viewButton = new JButton("View All Branch Managers");
+        addButton = new RoundedButton("Add New Branch Manager");
+        updateButton = new RoundedButton("Update Branch Manager");
+        deleteButton = new RoundedButton("Delete Branch Manager");
+        viewButton = new RoundedButton("View All Branch Managers");
+        RoundedButton[] buttons = { addButton, updateButton, deleteButton, viewButton };
+
+        Dimension buttonSize = new Dimension(190, 30);
+        Font buttonFont = new Font("Serif", Font.BOLD, 12);
+        setButtonProperties(buttons, buttonSize, buttonFont);
 
         buttonPanel.add(addButton);
         buttonPanel.add(updateButton);
@@ -87,6 +93,13 @@ public class BranchManagerView extends JFrame {
 
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private void setButtonProperties(RoundedButton[] buttons, Dimension size, Font font) {
+        for (RoundedButton button : buttons) {
+            button.setPreferredSize(size);
+            button.setFont(font);
+        }
     }
 
     public void addBranchManagerToTable(UserModel user) {

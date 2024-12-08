@@ -3,6 +3,8 @@ package SuperAdmin.view;
 import SuperAdmin.controller.BranchController;
 import SuperAdmin.controller.UserController;
 import SuperAdmin.model.UserModel;
+import utils.RoundedButton;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,7 +18,7 @@ public class AddBranchManagerView extends JFrame {
     private JTextField emailField;
     private JTextField salaryField;
     private JTextField empNumberField;
-    private JButton addButton;
+    private RoundedButton addButton;
     private List<Integer> activeBranchCodes;
     private BranchManagerView parent;
 
@@ -41,7 +43,7 @@ public class AddBranchManagerView extends JFrame {
         emailField = new JTextField(20);
         salaryField = new JTextField(20);
         empNumberField = new JTextField(20);
-        addButton = new JButton("Add Branch Manager");
+        addButton = new RoundedButton("Add Branch Manager");
 
         // Customize button and fields with a better font
         Font font = new Font("Arial", Font.PLAIN, 14);
@@ -52,7 +54,7 @@ public class AddBranchManagerView extends JFrame {
         empNumberField.setFont(font);
         addButton.setBackground(new Color(76, 175, 80)); // Green background
         addButton.setForeground(Color.WHITE);
-
+        addButton.setPreferredSize(new Dimension(140, 40));
         // Add components to the frame with constraints
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -177,11 +179,6 @@ public class AddBranchManagerView extends JFrame {
                 userController.addBranchManager(newBranchManager);
                 parent.loadBranchManagerData(); // Refresh data
                 dispose();
-                // Reset fields
-                // nameField.setText("");
-                // emailField.setText("");
-                // salaryField.setText("");
-                // empNumberField.setText("");
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Invalid salary or employee number.", "Error",

@@ -1,6 +1,7 @@
 package SuperAdmin.view;
 
 import SuperAdmin.controller.BranchController;
+import utils.RoundedButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class updateBranchView extends JFrame {
-    private JButton updateButton;
+    private RoundedButton updateButton;
     private JTextField nameField;
     private JTextField addressField;
     private JTextField cityField;
@@ -49,7 +50,8 @@ public class updateBranchView extends JFrame {
         // Using JSpinner for number of employees
         numEmpSpinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 
-        updateButton = new JButton("Update");
+        updateButton = new RoundedButton("Update");
+        updateButton.setPreferredSize(new Dimension(80, 15));
 
         updateButton.addActionListener(new ActionListener() {
             @Override

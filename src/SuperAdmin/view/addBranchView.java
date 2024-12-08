@@ -1,6 +1,7 @@
 package SuperAdmin.view;
 
 import SuperAdmin.controller.BranchController;
+import utils.RoundedButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +14,7 @@ public class addBranchView extends JDialog {
     private JTextField cityField;
     private JTextField addressField;
     private JTextField phoneField;
-    private JButton saveButton;
+    private RoundedButton saveButton;
     private branchView parent;
 
     public addBranchView(branchView parent) {
@@ -45,7 +46,9 @@ public class addBranchView extends JDialog {
 
         // Removed numEmployeesField and isActiveField
 
-        saveButton = new JButton("Save Branch");
+        saveButton = new RoundedButton("Save Branch");
+        saveButton.setPreferredSize(new Dimension(140, 40));
+
         saveButton.addActionListener(new SaveButtonListener());
         add(saveButton);
 

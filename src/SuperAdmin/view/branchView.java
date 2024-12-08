@@ -8,14 +8,15 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import SuperAdmin.model.BranchModel;
+import utils.RoundedButton;
 import SuperAdmin.controller.BranchController;
 
 public class branchView extends JFrame {
-    private JButton addButton;
-    private JButton updateButton;
-    private JButton deleteButton;
-    private JButton viewButton;
-    private JButton activateButton;
+    private RoundedButton addButton;
+    private RoundedButton updateButton;
+    private RoundedButton deleteButton;
+    private RoundedButton viewButton;
+    private RoundedButton activateButton;
     private JTable branchTable;
     private DefaultTableModel tableModel;
     private BranchController branchController = new BranchController();
@@ -52,11 +53,16 @@ public class branchView extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
 
-        addButton = new JButton("Add New Branch");
-        updateButton = new JButton("Update Branch");
-        activateButton = new JButton("Activate Branch");
-        deleteButton = new JButton("Delete Branch");
-        viewButton = new JButton("View All Branches");
+        addButton = new RoundedButton("Add New Branch");
+        updateButton = new RoundedButton("Update Branch");
+        activateButton = new RoundedButton("Activate Branch");
+        deleteButton = new RoundedButton("Delete Branch");
+        viewButton = new RoundedButton("View All Branches");
+        RoundedButton[] buttons = { addButton, updateButton, activateButton, deleteButton, viewButton };
+
+        Dimension buttonSize = new Dimension(150, 30);
+        Font buttonFont = new Font("Serif", Font.BOLD, 12);
+        setButtonProperties(buttons, buttonSize, buttonFont);
 
         buttonPanel.add(addButton);
         buttonPanel.add(updateButton);
@@ -85,6 +91,13 @@ public class branchView extends JFrame {
 
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private void setButtonProperties(RoundedButton[] buttons, Dimension size, Font font) {
+        for (RoundedButton button : buttons) {
+            button.setPreferredSize(size);
+            button.setFont(font);
+        }
     }
 
     public void addbranchToTable(BranchModel branch) {
