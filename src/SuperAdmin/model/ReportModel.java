@@ -4,17 +4,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReportModel {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/metro";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "4820";
+import utils.DatabaseConnection;
 
+public class ReportModel {
     public List<SalesData> getSalesData(String branchCode, String timePeriod, String startDate, String endDate)
             throws SQLException {
         String query = buildQuery(timePeriod, startDate, endDate);
         List<SalesData> salesDataList = new ArrayList<>();
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, branchCode);
@@ -53,7 +51,7 @@ public class ReportModel {
     public List<String> getBranchCodes() throws SQLException {
         List<String> branchCodes = new ArrayList<>();
         String query = "SELECT BranchCode FROM branches WHERE IsActive = 1";
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
 
