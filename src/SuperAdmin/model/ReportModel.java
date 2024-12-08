@@ -33,7 +33,7 @@ public class ReportModel {
         return salesDataList;
     }
 
-    private String buildQuery(String timePeriod, String startDate, String endDate) {
+    public String buildQuery(String timePeriod, String startDate, String endDate) {
         String query = "";
         if ("Specify Range".equals(timePeriod)) {
             query = "SELECT * FROM branchsales WHERE BranchCode = ? AND Date BETWEEN ? AND ?";
