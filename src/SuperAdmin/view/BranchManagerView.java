@@ -71,17 +71,14 @@ public class BranchManagerView extends JFrame {
         mainPanel.add(buttonPanel);
 
         tableModel = new DefaultTableModel(
-                new String[] { "Name", "Email", "BranchCode", "Salary", "EmpNumber", "AppointedOn", "UpdatedAt" }, // Removed
-                                                                                                                   // "Role"
-                                                                                                                   // and
-                                                                                                                   // renamed
-                                                                                                                   // "CreatedAt"
-                                                                                                                   // to
-                                                                                                                   // "AppointedOn"
-                0);
+                new String[] { "Name", "Email", "BranchCode", "Salary", "EmpNumber", "AppointedOn", "UpdatedAt" }, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // This makes all cells in the table uneditable
+            }
+        };
         branchManagerTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(branchManagerTable);
-
         add(titleLabel, BorderLayout.NORTH);
         add(mainPanel, BorderLayout.CENTER);
         add(scrollPane, BorderLayout.SOUTH);

@@ -95,7 +95,12 @@ public class reportsView extends JFrame {
         centerPanel.setBackground(new Color(240, 248, 255)); // Light blue background
 
         // Table Panel
-        dataTable = new JTable(new DefaultTableModel(new Object[][] {}, new String[] { "Date", "Branch", "Profit" }));
+        dataTable = new JTable(new DefaultTableModel(new Object[][] {}, new String[] { "Date", "Branch", "Profit" })) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // This makes all cells in the table uneditable
+            }
+        };
         JScrollPane tableScrollPane = new JScrollPane(dataTable);
         tableScrollPane.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(new Color(70, 130, 180), 2),
