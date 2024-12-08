@@ -67,9 +67,8 @@ public class addBranchView extends JDialog {
         addressField = createTextField(foregroundColor, new Color(240, 240, 240));
         phoneField = createTextField(foregroundColor, new Color(240, 240, 240));
 
-        saveButton = new RoundedButton("Save Branch");
+        saveButton = new RoundedButton("Add Branch");
         saveButton.setPreferredSize(new Dimension(150, 40));
-        saveButton.setBackground(new Color(50, 90, 120));
         saveButton.setForeground(Color.WHITE);
         saveButton.setFont(new Font("Siege UI", Font.BOLD, 18));
         saveButton.addActionListener(new SaveButtonListener());
@@ -187,7 +186,7 @@ public class addBranchView extends JDialog {
         public BackgroundPanel() {
             try {
                 // Load image from the classpath (ensure it's in the resources folder)
-                backgroundImage = ImageIO.read(getClass().getResource("bg.jpg"));
+                backgroundImage = ImageIO.read(getClass().getResource("/imgs/bg.jpg"));
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(addBranchView.this,

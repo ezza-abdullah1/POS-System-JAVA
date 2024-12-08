@@ -75,9 +75,8 @@ public class AddBranchManagerView extends JFrame {
         empNumberField = createTextField(foregroundColor, new Color(240, 240, 240));
         salaryField = createTextField(foregroundColor, new Color(240, 240, 240));
 
-        addButton = new RoundedButton("Add");
+        addButton = new RoundedButton("Add Branch Manager");
         addButton.setPreferredSize(new Dimension(150, 40));
-        addButton.setBackground(new Color(50, 90, 120));
         addButton.setForeground(Color.WHITE);
         addButton.setFont(new Font("Siege UI", Font.BOLD, 18));
         addButton.addActionListener(e -> addBranchManager());
@@ -200,7 +199,7 @@ public class AddBranchManagerView extends JFrame {
         public BackgroundPanel() {
             try {
                 // Load image from the classpath (ensure it's in the resources folder)
-                backgroundImage = ImageIO.read(getClass().getResource("bg.jpg"));
+                backgroundImage = ImageIO.read(getClass().getResource("/imgs/bg.jpg"));
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(AddBranchManagerView.this,

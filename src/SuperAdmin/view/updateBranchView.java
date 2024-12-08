@@ -79,9 +79,8 @@ public class updateBranchView extends JFrame {
         numEmpSpinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 
         // Update button
-        updateButton = new RoundedButton("Update");
+        updateButton = new RoundedButton("Update Branch");
         updateButton.setPreferredSize(new Dimension(150, 40));
-        updateButton.setBackground(new Color(50, 90, 120));
         updateButton.setForeground(Color.WHITE);
         updateButton.setFont(new Font("Siege UI", Font.BOLD, 18));
         updateButton.addActionListener(e -> updateBranch());
@@ -179,7 +178,7 @@ public class updateBranchView extends JFrame {
         public BackgroundPanel() {
             try {
                 // Load background image
-                backgroundImage = ImageIO.read(getClass().getResource("bg.jpg"));
+                backgroundImage = ImageIO.read(getClass().getResource("/imgs/bg.jpg"));
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(updateBranchView.this,
