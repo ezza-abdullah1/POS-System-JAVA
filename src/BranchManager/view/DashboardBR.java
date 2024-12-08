@@ -27,7 +27,7 @@ public class DashboardBR {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1200, 800);
         frame.setLocationRelativeTo(null);
-        frame.setContentPane(createBackgroundPanel());
+        frame.setContentPane(createBackgroundPanel());  // Set background panel with overlay
     }
 
     private JPanel createBackgroundPanel() {
@@ -43,7 +43,7 @@ public class DashboardBR {
                     g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                 }
 
-                // Create semi-transparent overlay
+                // Create semi-transparent overlay only for the DashboardBR screen
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
@@ -102,13 +102,13 @@ public class DashboardBR {
         panel.add(createActionCard(
                 "Manage Cashiers",
                 "Add, remove, or modify cashier accounts",
-                e -> new CashierView()
+                e -> new CashierView()  // CashierView should not have overlay
         ));
 
         panel.add(createActionCard(
                 "Manage Data Entry Operators",
                 "Manage DEO accounts and permissions",
-                e -> new DEO_View()  // Add DEO management functionality
+                e -> new DEO_View()  // DEO_View should not have overlay
         ));
 
         panel.add(createActionCard(
@@ -232,11 +232,11 @@ public class DashboardBR {
     }
     
     public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // try {
+        //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // }
         SwingUtilities.invokeLater(DashboardBR::new);
     }
 }
