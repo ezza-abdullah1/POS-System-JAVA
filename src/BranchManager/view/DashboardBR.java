@@ -113,7 +113,7 @@ public class DashboardBR {
 
         panel.add(createActionCard(
                 "Settings",
-                "Configure system preferences",
+                "  Configure system preferences",
                 e -> {}  // Add settings functionality
         ));
 

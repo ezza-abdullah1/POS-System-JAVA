@@ -16,6 +16,7 @@ import java.awt.event.KeyListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 public class CashierView extends JFrame {
     private JTextField productIdField, quantityField, cashField;
     private JLabel cashAmountLabel;
