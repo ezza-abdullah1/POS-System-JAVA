@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
-import dao.ProductDAOTemp;
+import dao.ProductDAO;
 import dao.BillingDAO;
-import db.BranchSalesDAO;
+import dao.BranchSalesDAO;
 import model.CartItem;
 import model.Product;
 import view.CashierView;
@@ -18,7 +18,7 @@ import java.awt.event.KeyAdapter;
 
 public class CashierController {
     private final CashierView view;
-    private final ProductDAOTemp productDAO;
+    private final ProductDAO productDAO;
     private final List<CartItem> cartItems;
     private String lastUsedMetroCard = null;
     private double lastDeductedAmount = 0.0;
@@ -31,7 +31,7 @@ public class CashierController {
 
     public CashierController(CashierView view) {
         this.view = view;
-        this.productDAO = new ProductDAOTemp();
+        this.productDAO = new ProductDAO();
         this.cartItems = new ArrayList<>();
         initializeListeners();
 
@@ -299,7 +299,7 @@ public class CashierController {
             }
         }
     }
-    private void addItem() {
+    void addItem() {
         try {
             String productId = view.getProductId();
             int quantity = view.getQuantity();
