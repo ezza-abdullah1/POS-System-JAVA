@@ -9,8 +9,11 @@ public class CartItem {
 
     public CartItem(Product product, int quantity) {
         this.product = product;
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than zero");
+        }
         this.quantity = quantity;
-        calculateAmounts();
+        calculateAmounts(); // Recalculate the amounts if the quantity changes
     }
 
     public void calculateAmounts() {
@@ -24,10 +27,14 @@ public class CartItem {
     public Product getProduct() { return product; }
     public void setProduct(Product product) { this.product = product; }
     public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) { 
+    public void setQuantity(int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than zero");
+        }
         this.quantity = quantity;
-        calculateAmounts();
+        calculateAmounts(); // Recalculate the amounts if the quantity changes
     }
+
     public double getSubtotal() { return subtotal; }
     public double getDiscountAmount() { return discountAmount; }
     public double getTaxAmount() { return taxAmount; }
