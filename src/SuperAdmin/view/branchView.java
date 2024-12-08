@@ -74,7 +74,13 @@ public class branchView extends JFrame {
         mainPanel.add(buttonPanel);
 
         tableModel = new DefaultTableModel(
-                new String[] { "BranchCode", "BranchName", "City", "Address", "Phone", "NumEmployees", "IsActive" }, 0);
+                new String[] { "BranchCode", "BranchName", "City", "Address", "Phone", "NumEmployees", "IsActive" },
+                0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // This makes all cells in the table uneditable
+            }
+        };
         branchTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(branchTable);
 
