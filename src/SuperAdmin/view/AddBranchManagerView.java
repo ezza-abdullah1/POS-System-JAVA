@@ -292,7 +292,7 @@ public class AddBranchManagerView extends JFrame {
                 UserController userController = new UserController();
                 userController.addBranchManager(newBranchManager);
                 parent.loadBranchManagerData(); // Refresh data
-                dispose();
+                // dispose();
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Invalid salary or employee number.", "Error",
