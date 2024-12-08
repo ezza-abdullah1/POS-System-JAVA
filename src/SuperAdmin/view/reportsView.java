@@ -36,6 +36,10 @@ public class reportsView extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         setSize(1000, 700);
+        // Center the window on the screen
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(screenSize.width / 2 - getSize().width / 2, screenSize.height / 2 - getSize().height / 2);
+
         controller = new ReportController(this);
 
         // Initialize Components
