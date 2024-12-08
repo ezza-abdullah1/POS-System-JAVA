@@ -2,6 +2,7 @@ package SuperAdmin.view;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -24,70 +25,121 @@ public class branchView extends JFrame {
 
     public branchView() {
         setTitle("Branch Management");
-        setSize(800, 600);
+        setSize(900, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
+        // Header with Image
+        JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new BorderLayout());
+        headerPanel.setBackground(new Color(70, 130, 180));
+
+        // Full-Width Image
+        ImageIcon headerIcon = new ImageIcon("src\\imgs\\Logo_METRO.svg.png");
+        Image scaledImage = headerIcon.getImage().getScaledInstance(getWidth(), 100, Image.SCALE_SMOOTH);
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Title Label
         JLabel titleLabel = new JLabel("Branch Management", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
+        titleLabel.setForeground(Color.WHITE);
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        // Add components to the header
+        headerPanel.add(imageLabel, BorderLayout.NORTH);
+        headerPanel.add(titleLabel, BorderLayout.SOUTH);
 
-        JPanel searchPanel = new JPanel();
-        searchPanel.setLayout(new FlowLayout());
+        // Side Panel (Button Panel)
+        JPanel sidePanel = new JPanel();
+        sidePanel.setLayout(new GridLayout(5, 1, 10, 10)); // Updated to 5 for the extra activate button
+        sidePanel.setBackground(new Color(70, 130, 160));
+        sidePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Search Panel moved to the right
+JPanel searchPanel = new JPanel();
+searchPanel.setLayout(new FlowLayout(FlowLayout.RIGHT)); // Align to the right
+searchPanel.setBackground(new Color(70, 130, 160));
+searchPanel.setPreferredSize(new Dimension(250, 50)); // Increase size
+        // // Search Panel
+        // JPanel searchPanel = new JPanel();
+        // searchPanel.setLayout(new FlowLayout());
+        // searchPanel.setBackground(new Color(70, 130, 160));
 
         JLabel searchLabel = new JLabel("Search:");
+        searchLabel.setForeground(Color.WHITE);
+        searchLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+
         searchField = new JTextField(20);
-        searchField.setToolTipText("Search customers...");
-        searchField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                filterTable(searchField.getText());
-            }
-        });
+searchField.setToolTipText("Search branches...");
+searchField.setFont(new Font("SansSerif", Font.PLAIN, 16)); // Make the font modern
+searchField.setPreferredSize(new Dimension(200, 35)); // Increase width and height
+searchField.setBorder(BorderFactory.createLineBorder(new Color(70, 130, 180), 2)); // Modern border
+searchField.addKeyListener(new KeyAdapter() {
+    @Override
+    public void keyReleased(KeyEvent e) {
+        filterTable(searchField.getText());
+    }
+});
+
+        // searchField = new JTextField(20);
+        // searchField.setToolTipText("Search branches...");
+        // searchField.addKeyListener(new KeyAdapter() {
+        //     @Override
+        //     public void keyReleased(KeyEvent e) {
+        //         filterTable(searchField.getText());
+        //     }
+        // });
 
         searchPanel.add(searchLabel);
         searchPanel.add(searchField);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout());
-
+        // Buttons
         addButton = new RoundedButton("Add New Branch");
         updateButton = new RoundedButton("Update Branch");
         activateButton = new RoundedButton("Activate Branch");
         deleteButton = new RoundedButton("Delete Branch");
         viewButton = new RoundedButton("View All Branches");
-        RoundedButton[] buttons = { addButton, updateButton, activateButton, deleteButton, viewButton };
 
-        Dimension buttonSize = new Dimension(150, 30);
-        Font buttonFont = new Font("Serif", Font.BOLD, 12);
-        setButtonProperties(buttons, buttonSize, buttonFont);
+        RoundedButton[] buttons = {addButton, updateButton, activateButton, deleteButton, viewButton};
+        setButtonProperties(buttons);
 
-        buttonPanel.add(addButton);
-        buttonPanel.add(updateButton);
-        buttonPanel.add(activateButton);
-        buttonPanel.add(deleteButton);
-        buttonPanel.add(viewButton);
+        for (RoundedButton button : buttons) {
+            sidePanel.add(button);
+        }
 
-        mainPanel.add(searchPanel);
-        mainPanel.add(buttonPanel);
-
+        // Table
         tableModel = new DefaultTableModel(
-                new String[] { "BranchCode", "BranchName", "City", "Address", "Phone", "NumEmployees", "IsActive" },
+                new String[]{"BranchCode", "BranchName", "City", "Address", "Phone", "NumEmployees", "IsActive"},
                 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // This makes all cells in the table uneditable
+                return false;
             }
         };
+        
         branchTable = new JTable(tableModel);
+        branchTable.setFillsViewportHeight(true);
+        branchTable.setRowHeight(25);
+        
+        JTableHeader tableHeader = branchTable.getTableHeader();
+        tableHeader.setFont(new Font("SansSerif", Font.BOLD, 20));
+        tableHeader.setBackground(new Color(25, 25, 130));
+        tableHeader.setForeground(Color.WHITE);
+        branchTable.setTableHeader(tableHeader);
+        
         JScrollPane scrollPane = new JScrollPane(branchTable);
 
-        add(titleLabel, BorderLayout.NORTH);
-        add(mainPanel, BorderLayout.CENTER);
-        add(scrollPane, BorderLayout.SOUTH);
+        // Layout assembly
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(searchPanel, BorderLayout.NORTH);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
 
+        // Add components to the frame
+        add(headerPanel, BorderLayout.NORTH);
+        add(sidePanel, BorderLayout.WEST);
+        add(mainPanel, BorderLayout.CENTER);
+
+        // Event Listeners
         branchTable.getSelectionModel().addListSelectionListener(e -> updateActivateButtonText());
         addButton.addActionListener(e -> openAddbranchScreen());
         updateButton.addActionListener(e -> openUpdateBranchScreen());
@@ -99,10 +151,14 @@ public class branchView extends JFrame {
         setVisible(true);
     }
 
-    private void setButtonProperties(RoundedButton[] buttons, Dimension size, Font font) {
+    private void setButtonProperties(RoundedButton[] buttons) {
         for (RoundedButton button : buttons) {
-            button.setPreferredSize(size);
-            button.setFont(font);
+            button.setFont(new Font("SansSerif", Font.BOLD, 14));
+            button.setBackground(new Color(70, 130, 180));
+            button.setForeground(Color.WHITE);
+            button.setFocusPainted(false);
+            button.setPreferredSize(new Dimension(button.getPreferredSize().width, 
+                button.getPreferredSize().height - 28));
         }
     }
 

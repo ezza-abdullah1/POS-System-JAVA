@@ -164,7 +164,7 @@ public class dashboard {
 
         card.add(Box.createVerticalStrut(10));
 
-        JLabel descLabel = new JLabel("<html><center>" + description + "</center></html>");
+        JLabel descLabel = new JLabel("<html><center> " + description + "</center></html>");
         descLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         descLabel.setForeground(Color.GRAY);
         descLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
