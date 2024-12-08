@@ -1,6 +1,6 @@
 package DataEntryOperator.controller;
 
-import db.DatabaseConnection;
+import utils.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +11,7 @@ public class ProductController {
             int quantity) {
         String query = "INSERT INTO Product (product_id, vendor_id, name, category, original_price, sale_price, price_by_unit, price_by_carton, tax, weight, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
                 PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setString(1, productId);

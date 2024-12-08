@@ -1,7 +1,7 @@
 package DataEntryOperator.controller;
 
 import DataEntryOperator.model.Vendor;
-import db.DatabaseConnection;
+import utils.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ public class VendorController {
         List<Vendor> vendors = new ArrayList<>();
         String query = "SELECT * FROM vendors";
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
                 PreparedStatement statement = connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
 
@@ -33,7 +33,7 @@ public class VendorController {
     public void addVendor(String name, String address, String contact) {
         String query = "INSERT INTO vendors (vendor_name, vendor_address, contact_no) VALUES (?, ?, ?)";
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
                 PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setString(1, name);

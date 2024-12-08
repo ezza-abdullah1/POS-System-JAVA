@@ -1,6 +1,6 @@
 package SuperAdmin.model;
 
-import db.DatabaseConnection;
+import utils.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -103,7 +103,7 @@ public class BranchModel {
         List<BranchModel> branches = new ArrayList<>();
         String query = "SELECT BranchID, BranchCode, BranchName, City, Address, Phone, NumEmployees, IsActive FROM branches";
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query)) {
 
@@ -132,7 +132,7 @@ public class BranchModel {
     public static BranchModel findBranchByCode(String branchCode) {
         String query = "SELECT BranchID, BranchCode, BranchName, City, Address, Phone, NumEmployees, IsActive FROM branches WHERE BranchCode = ?";
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, branchCode);
@@ -164,7 +164,7 @@ public class BranchModel {
         String query = "INSERT INTO branches (BranchCode, BranchName, City, Address, Phone, NumEmployees, IsActive) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        Connection connection = DatabaseConnection.getConnection();
+        Connection connection = DatabaseConnection.getInstance().getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
 
         preparedStatement.setString(1, branch.getBranchCode());
@@ -187,7 +187,7 @@ public class BranchModel {
     public static void deleteBranch(int branchcode) {
         String query = "DELETE FROM branches WHERE BranchCode = ?";
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, branchcode);
@@ -208,7 +208,7 @@ public class BranchModel {
     public static void updateBranch(BranchModel branch) {
         String query = "UPDATE branches SET BranchName = ?, City = ?, Address = ?, Phone = ?, NumEmployees = ?, IsActive = ? WHERE BranchCode = ?";
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(7, branch.getBranchCode());
@@ -235,7 +235,7 @@ public class BranchModel {
     public static void updateBranchStatus(int branchCode, boolean newStatus) {
         String query = "UPDATE branches SET IsActive = ? WHERE BranchCode = ?";
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setBoolean(1, newStatus);
@@ -258,7 +258,7 @@ public class BranchModel {
         List<Integer> activeBranchCodes = new ArrayList<>();
         String query = "SELECT BranchCode FROM branches WHERE IsActive = '1'";
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
                 Statement stmt = connection.createStatement();
                 ResultSet resultSet = stmt.executeQuery(query)) {
 
