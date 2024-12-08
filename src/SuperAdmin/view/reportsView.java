@@ -53,31 +53,49 @@ public class reportsView extends JFrame {
 
     private void initComponents() {
         // Top Panel (Selection Options)
-        JPanel topPanel = new JPanel(new GridLayout(3, 2, 10, 10));
+        JPanel topPanel = new JPanel(new GridLayout(2, 2, 10, 10)); // 2 rows, 2 columns
         topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+        // Branch Code and Time Period
+        JPanel branchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // No extra space between components
         JLabel branchCodeLabel = new JLabel("Branch Code:");
+        branchCodeLabel.setPreferredSize(new Dimension(100, 30)); // Set label width to match text field
         branchCodeComboBox = new JComboBox<>();
-        topPanel.add(branchCodeLabel);
-        topPanel.add(branchCodeComboBox);
+        branchCodeComboBox.setPreferredSize(new Dimension(150, 30)); // Set combo box width
+        branchPanel.add(branchCodeLabel);
+        branchPanel.add(branchCodeComboBox);
         controller.populateBranchCodes();
+        topPanel.add(branchPanel);
 
+        JPanel timePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // No extra space between components
         JLabel timePeriodLabel = new JLabel("Time Period:");
+        timePeriodLabel.setPreferredSize(new Dimension(100, 30)); // Set label width to match text field
         timePeriodComboBox = new JComboBox<>(new String[] { "Today", "Weekly", "Monthly", "Yearly", "Specify Range" });
-        topPanel.add(timePeriodLabel);
-        topPanel.add(timePeriodComboBox);
+        timePeriodComboBox.setPreferredSize(new Dimension(150, 30)); // Set combo box width
+        timePanel.add(timePeriodLabel);
+        timePanel.add(timePeriodComboBox);
+        topPanel.add(timePanel);
 
+        // Start Date and End Date
+        JPanel datePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // No extra space between components
         JLabel startDateLabel = new JLabel("Start Date:");
+        startDateLabel.setPreferredSize(new Dimension(100, 30)); // Set label width to match text field
         startDateChooser = new JDateChooser();
-        startDateChooser.setVisible(false);
-        topPanel.add(startDateLabel);
-        topPanel.add(startDateChooser);
+        startDateChooser.setPreferredSize(new Dimension(150, 30)); // Set text field width
+        startDateChooser.setVisible(false); // Initially hidden
+        datePanel.add(startDateLabel);
+        datePanel.add(startDateChooser);
+        topPanel.add(datePanel);
 
+        JPanel endDatePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // No extra space between components
         JLabel endDateLabel = new JLabel("End Date:");
+        endDateLabel.setPreferredSize(new Dimension(100, 30)); // Set label width to match text field
         endDateChooser = new JDateChooser();
-        endDateChooser.setVisible(false);
-        topPanel.add(endDateLabel);
-        topPanel.add(endDateChooser);
+        endDateChooser.setPreferredSize(new Dimension(150, 30)); // Set text field width
+        endDateChooser.setVisible(false); // Initially hidden
+        endDatePanel.add(endDateLabel);
+        endDatePanel.add(endDateChooser);
+        topPanel.add(endDatePanel);
 
         // Show/Hide date choosers based on time period selection
         timePeriodComboBox.addActionListener(e -> {
@@ -103,7 +121,7 @@ public class reportsView extends JFrame {
         };
         JScrollPane tableScrollPane = new JScrollPane(dataTable);
         tableScrollPane.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(new Color(70, 130, 180), 2),
+                BorderFactory.createLineBorder(new Color(0x00008B), 2),
                 "Sales Data Table",
                 TitledBorder.LEFT, TitledBorder.TOP,
                 new Font("Segoe UI", Font.BOLD, 14), new Color(50, 50, 112)));
@@ -112,7 +130,7 @@ public class reportsView extends JFrame {
         // Chart Panel
         chartPanel = new JPanel(new BorderLayout());
         chartPanel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(new Color(70, 130, 180), 2),
+                BorderFactory.createLineBorder(new Color(0x00008B), 2),
                 "Profit Chart",
                 TitledBorder.LEFT, TitledBorder.TOP,
                 new Font("Segoe UI", Font.BOLD, 14), new Color(50, 50, 112)));
@@ -122,8 +140,8 @@ public class reportsView extends JFrame {
 
         // Bottom Panel (Generate Report Button)
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        generateReportButton = createGradientButton("Generate Report", new Color(70, 130, 180),
-                new Color(30, 144, 255));
+        generateReportButton = createGradientButton("Generate Report", new Color(0x003366),
+                new Color(0x00509d));
         bottomPanel.add(generateReportButton);
         add(bottomPanel, BorderLayout.SOUTH);
         // Add Action Listener for Generate Report Button
@@ -178,7 +196,7 @@ public class reportsView extends JFrame {
         });
 
         // Table Header
-        dataTable.getTableHeader().setBackground(new Color(70, 130, 180)); // Steel blue
+        dataTable.getTableHeader().setBackground(new Color(30, 60, 120)); // Darker shade of steel blue
         dataTable.getTableHeader().setForeground(Color.WHITE);
     }
 
@@ -255,10 +273,18 @@ public class reportsView extends JFrame {
         CategoryPlot plot = chart.getCategoryPlot();
         plot.setRangeGridlinePaint(Color.GRAY); // Light gray grid lines
         plot.setBackgroundPaint(new Color(230, 230, 250)); // Lavender background
+
         BarRenderer renderer = (BarRenderer) plot.getRenderer();
 
-        // Gradient colors for bars
-        Color[] barColors = { Color.BLUE, Color.GREEN, Color.ORANGE, Color.CYAN, Color.MAGENTA };
+        // Gradient colors for bars, using variations of dark blue
+        Color[] barColors = {
+                new Color(30, 60, 120), // Dark blue
+                new Color(40, 80, 140), // Slightly lighter blue
+                new Color(50, 100, 160), // Lighter blue
+                new Color(60, 120, 180), // Even lighter blue
+                new Color(70, 140, 200) // Light blue
+        };
+
         for (int i = 0; i < barColors.length; i++) {
             renderer.setSeriesPaint(i, barColors[i]);
         }
