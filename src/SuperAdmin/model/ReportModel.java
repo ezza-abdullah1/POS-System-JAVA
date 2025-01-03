@@ -12,7 +12,7 @@ public class ReportModel {
         String query = buildQuery(timePeriod, startDate, endDate);
         List<SalesData> salesDataList = new ArrayList<>();
 
-        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+        try (Connection conn = DatabaseConnection.GETConnection();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, branchCode);
@@ -51,7 +51,7 @@ public class ReportModel {
     public List<String> getBranchCodes() throws SQLException {
         List<String> branchCodes = new ArrayList<>();
         String query = "SELECT BranchCode FROM branches WHERE IsActive = 1";
-        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+        try (Connection conn = DatabaseConnection.GETConnection();
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
 

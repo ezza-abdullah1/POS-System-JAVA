@@ -17,19 +17,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddUserView extends JFrame {
-    private JComboBox<String> branchComboBox;
     private JTextField nameField;
     private JTextField emailField;
     private JTextField salaryField;
     private JTextField empNumberField;
     private RoundedButton addButton;
-    private List<Integer> activeBranchCodes;
     private UserTableView parent;
     private String role;
+    private int branchCode;
 
     public AddUserView(UserTableView parent) {
         this.parent = parent;
         this.role = parent.getRole();
+        this.branchCode = parent.getBranchCode();
         setTitle("Add " + role);
         setSize(600, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -56,15 +56,12 @@ public class AddUserView extends JFrame {
 
         // Create and add labels and fields
         Color foregroundColor = new Color(0, 0, 0); // Black text
-        JLabel branchLabel = createLabel("Select Branch:", foregroundColor);
+        JLabel branchLabel = createLabel("For Branch:", foregroundColor);
+        JLabel branchCodeLabel = createLabel(String.valueOf(branchCode), foregroundColor);
         JLabel nameLabel = createLabel("Name:", foregroundColor);
         JLabel emailLabel = createLabel("Email:", foregroundColor);
         JLabel salaryLabel = createLabel("Salary:", foregroundColor);
         JLabel empNumberLabel = createLabel("Employee Number:", foregroundColor);
-        activeBranchCodes = new ArrayList<>();
-        branchComboBox = new JComboBox<>();
-        branchComboBox.setFont(new Font("Siege UI", Font.PLAIN, 14));
-        branchComboBox.setBackground(Color.WHITE);
 
         nameField = createTextField(foregroundColor, new Color(240, 240, 240));
         emailField = createTextField(foregroundColor, new Color(240, 240, 240));
@@ -82,7 +79,7 @@ public class AddUserView extends JFrame {
         gbc.gridy = 0;
         contentPanel.add(branchLabel, gbc);
         gbc.gridx = 1;
-        contentPanel.add(branchComboBox, gbc);
+        contentPanel.add(branchCodeLabel, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -118,10 +115,6 @@ public class AddUserView extends JFrame {
 
         setContentPane(layeredPane);
         setVisible(true);
-
-        // Load active branches into the JComboBox
-        BranchController userController = new BranchController();
-        userController.loadActiveBranchesToView(this);
     }
 
     private JLabel createLabel(String text, Color foregroundColor) {
@@ -251,10 +244,6 @@ public class AddUserView extends JFrame {
         };
     }
 
-    public void addBranchToComboBox(String branch, int branchCode) {
-        branchComboBox.addItem(branch);
-        activeBranchCodes.add(branchCode);
-    }
 
     private void addUser() {
         String name = nameField.getText().trim();
@@ -287,15 +276,13 @@ public class AddUserView extends JFrame {
                 return;
             }
 
-            int selectedBranchCode = activeBranchCodes.get(branchComboBox.getSelectedIndex());
-
             int confirm = JOptionPane.showConfirmDialog(this,
                     "Are you sure you want to add this " + role + "?\n\n"
                             + "Name: " + name + "\n"
                             + "Email: " + email + "\n"
                             + "Salary: " + salary + "\n"
                             + "Employee Number: " + empNumber + "\n"
-                            + "Branch: " + branchComboBox.getSelectedItem(),
+                            + "Branch: " + branchCode,
                     "Confirm Addition", JOptionPane.YES_NO_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
@@ -304,13 +291,13 @@ public class AddUserView extends JFrame {
                 newUser.setEmail(email);
                 newUser.setPassword("123");
                 newUser.setRole(role);
-                newUser.setBranchCode(selectedBranchCode);
+                newUser.setBranchCode(branchCode);
                 newUser.setSalary(salary);
                 newUser.setEmpNumber(empNumber);
 
                 UserController userController = new UserController();
                 userController.addUser(newUser);
-                parent.loadUserData(role);
+                parent.loadUserData(branchCode,role);
                 // dispose();
             }
         } catch (NumberFormatException ex) {
@@ -318,6 +305,6 @@ public class AddUserView extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
         } catch (IndexOutOfBoundsException ex) {
             JOptionPane.showMessageDialog(this, "Please select a valid branch.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+ }
+}
 }

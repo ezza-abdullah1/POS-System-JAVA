@@ -1,0 +1,26 @@
+=============== METRO ===============
+=====================================
+
+=============== BILL ===============
+Date: Tue Dec 10 14:25:21 PKT 2024
+
+Items:
+--------------------------------
+Laptop               x1  Rs 64350.00
+Mobile               x1  Rs 37440.00
+rice                 x1  Rs 2346.00
+
+Payment Details:
+--------------------------------
+Subtotal:         Rs 104136.00
+Discount:         Rs .00
+Tax:              Rs 14836.00
+Total:            Rs 118972.00
+Metro Card Used:   MC123
+Points Redeemed:   Rs 129.53
+Cash Paid:         Rs 120000.00
+Change:           Rs 1157.53
+Points Earned:     3965
+
+================================
+Thank you for shopping with us!

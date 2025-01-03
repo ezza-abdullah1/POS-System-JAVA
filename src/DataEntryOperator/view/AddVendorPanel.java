@@ -9,29 +9,106 @@ public class AddVendorPanel extends JFrame {
     private JButton saveButton;
 
     public AddVendorPanel() {
+        // Apply Nimbus Look and Feel
+        try {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         setTitle("Add New Vendor");
-        setSize(400, 300);
+        setSize(1000, 800); // Standard size
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new GridLayout(4, 2));
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+
+        // Create a panel with semi-transparent background
+        JPanel backgroundPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                // Load the background image
+                ImageIcon bgImage = new ImageIcon("src\\imgs\\Screenshot 2024-12-09 032241.jpg");
+                Image image = bgImage.getImage();
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+
+                // Add semi-transparent overlay
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setColor(new Color(255, 255, 255, 170)); // Semi-transparent white
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                g2d.dispose();
+            }
+        };
+        backgroundPanel.setLayout(new GridBagLayout());
+        add(backgroundPanel);
+
+        // Create the form panel
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setOpaque(false); // Transparent background
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(15, 15, 15, 15); // Increased spacing
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Vendor Name field
-        add(new JLabel("Vendor Name:"));
-        nameField = new JTextField();
-        add(nameField);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        formPanel.add(createLabel("Vendor Name:"), gbc);
+
+        gbc.gridx = 1;
+        nameField = createTextField();
+        formPanel.add(nameField, gbc);
 
         // Vendor Address field
-        add(new JLabel("Vendor Address:"));
-        addressField = new JTextField();
-        add(addressField);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        formPanel.add(createLabel("Vendor Address:"), gbc);
+
+        gbc.gridx = 1;
+        addressField = createTextField();
+        formPanel.add(addressField, gbc);
 
         // Contact No field
-        add(new JLabel("Contact No:"));
-        contactField = new JTextField();
-        add(contactField);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        formPanel.add(createLabel("Contact No:"), gbc);
+
+        gbc.gridx = 1;
+        contactField = createTextField();
+        formPanel.add(contactField, gbc);
 
         // Save Button
-        saveButton = new JButton("Save");
-        add(saveButton);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        saveButton = createButton("Save");
+        formPanel.add(saveButton, gbc);
+
+        backgroundPanel.add(formPanel);
+    }
+
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("Segoe UI", Font.BOLD, 26)); // Larger font size
+        return label;
+    }
+
+    private JTextField createTextField() {
+        JTextField textField = new JTextField(25); // Larger text field
+        textField.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        return textField;
+    }
+
+    private JButton createButton(String text) {
+        JButton button = new JButton(text);
+        button.setFocusPainted(false);
+        button.setFont(new Font("Segoe UI", Font.BOLD, 23));
+        button.setBackground(new Color(0, 102, 204));
+        button.setForeground(Color.WHITE);
+        return button;
     }
 
     public String getVendorName() {
@@ -54,23 +131,19 @@ public class AddVendorPanel extends JFrame {
         });
     }
 
-    // Validation logic
     private boolean validateInputs() {
-        // Vendor Name validation: Cannot be empty
         if (getVendorName().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vendor Name cannot be empty.", "Validation Error",
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
-        // Vendor Address validation: Cannot be empty
         if (getVendorAddress().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vendor Address cannot be empty.", "Validation Error",
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
-        // Contact Number validation: Must be numeric and 10-15 digits long
         String contact = getContactNo();
         if (contact.isEmpty() || !contact.matches("\\d{10,15}")) {
             JOptionPane.showMessageDialog(this, "Contact Number must be numeric and 10 to 15 digits long.",
@@ -79,5 +152,12 @@ public class AddVendorPanel extends JFrame {
         }
 
         return true;
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            AddVendorPanel panel = new AddVendorPanel();
+            panel.setVisible(true);
+        });
     }
 }

@@ -19,7 +19,7 @@ public class BranchModelTest {
     @BeforeAll
     void setupDatabase() {
         try {
-            connection = DatabaseConnection.getInstance().getConnection();
+            connection = DatabaseConnection.GETConnection();
             try (Statement statement = connection.createStatement()) {
                 String checkTableQuery = "SELECT 1 FROM branches LIMIT 1";
                 try {

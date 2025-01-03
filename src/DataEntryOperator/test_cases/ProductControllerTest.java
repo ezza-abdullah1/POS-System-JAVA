@@ -42,8 +42,8 @@ public class ProductControllerTest {
 
         // Assert
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
-                Statement stmt = connection.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM Product WHERE product_id = '" + productId + "'")) {
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM Product WHERE product_id = '" + productId + "'")) {
 
             assertTrue(rs.next(), "Product should be added to the database.");
             assertEquals(productId, rs.getString("product_id"));

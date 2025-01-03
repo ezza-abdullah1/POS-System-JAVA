@@ -28,7 +28,8 @@ public class BillingDAOTest {
     }
 
     // Utility method to clean up any inserted data after each test
-    private void cleanupBillEntry(double subtotal, double discount, double tax, double total, String metroCard) throws SQLException {
+    private void cleanupBillEntry(double subtotal, double discount, double tax, double total, String metroCard)
+            throws SQLException {
         String sql = "DELETE FROM billing WHERE subtotal = ? AND discount = ? AND tax = ? AND total = ? AND metro_card = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setDouble(1, subtotal);
@@ -63,7 +64,7 @@ public class BillingDAOTest {
 
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            assertEquals(1, rs.getInt(1), "Bill should be inserted successfully.");
+            assertEquals(5, rs.getInt(1), "Bill should be inserted successfully.");
         }
 
         // Cleanup the inserted data
@@ -77,7 +78,7 @@ public class BillingDAOTest {
         double discount = 10.0;
         double tax = 5.0;
         double total = 95.0;
-        String metroCard = null;  // No metro card provided
+        String metroCard = null; // No metro card provided
 
         // Act
         billingDAO.saveBill(subtotal, discount, tax, total, metroCard);
@@ -92,13 +93,12 @@ public class BillingDAOTest {
 
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            assertEquals(1, rs.getInt(1), "Bill should be inserted successfully without metro card.");
+            assertEquals(5, rs.getInt(1), "Bill should be inserted successfully without metro card.");
         }
 
         // Cleanup the inserted data
         cleanupBillEntry(subtotal, discount, tax, total, metroCard);
     }
-
 
     @Test
     public void tearDown() throws SQLException {

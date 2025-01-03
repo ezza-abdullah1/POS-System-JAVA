@@ -65,30 +65,30 @@ public class LoginView extends JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // Use BoxLayout for vertical arrangement
         panel.setOpaque(true);
         panel.setBorder(new EmptyBorder(20, 40, 40, 40));
-    
+
         // Back Button
         RoundedButton backButton = new RoundedButton("<<");
         backButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
         backButton.setPreferredSize(new Dimension(40, 10)); // Make the back button small
         backButton.setBorder(BorderFactory.createLineBorder(Color.white));
         backButton.addActionListener(e -> navigateBackToSplash());
-    
+
         // Panel for the back button (top-left)
         JPanel backButtonPanel = new JPanel();
         backButtonPanel.setLayout(new BorderLayout());
         backButtonPanel.add(backButton, BorderLayout.WEST);
         backButtonPanel.setOpaque(false); // Make it transparent
-    
+
         // Add back button panel to the top of the main panel
         panel.add(backButtonPanel);
-    
+
         // Create the login form panel with GridBagLayout
         JPanel loginFormPanel = new JPanel();
         loginFormPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(15, 10, 15, 10); // Adds space between components
-    
+
         // Login Title
         JLabel titleLabel = new JLabel("         Login");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 34));
@@ -97,7 +97,7 @@ public class LoginView extends JFrame {
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.CENTER; // Center the title
         loginFormPanel.add(titleLabel, gbc);
-    
+
         // Email Label and TextField
         JLabel emailLabel = new JLabel("Email:");
         emailLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -105,28 +105,28 @@ public class LoginView extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 2;
         loginFormPanel.add(emailLabel, gbc);
-    
+
         emailField = new JTextField();
         emailField.setPreferredSize(new Dimension(200, 30));
         emailField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         emailField.setBorder(BorderFactory.createLineBorder(primaryColor));
         gbc.gridx = 1;
         loginFormPanel.add(emailField, gbc);
-    
+
         // Password Label and PasswordField
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         gbc.gridx = 0;
         gbc.gridy = 3;
         loginFormPanel.add(passwordLabel, gbc);
-    
+
         passwordField = new JPasswordField();
         passwordField.setPreferredSize(new Dimension(200, 30));
         passwordField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         passwordField.setBorder(BorderFactory.createLineBorder(primaryColor));
         gbc.gridx = 1;
         loginFormPanel.add(passwordField, gbc);
-    
+
         // Login Button (Centered)
         loginButton = new RoundedButton("Login");
         loginButton.setPreferredSize(new Dimension(100, 40));
@@ -135,13 +135,13 @@ public class LoginView extends JFrame {
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.CENTER; // Center the button
         loginFormPanel.add(loginButton, gbc);
-    
+
         // Add login form panel to the main panel
         panel.add(loginFormPanel);
-    
+
         return panel;
     }
-    
+
     public String getEmail() {
         return emailField.getText();
     }
@@ -158,17 +158,17 @@ public class LoginView extends JFrame {
         loginButton.addActionListener(listener);
     }
 
-    // Navigate back to SplashScreen
     private void navigateBackToSplash() {
-        // Code to navigate back to the splash screen (you may need to instantiate it)
-        // e.g., new SplashScreenView().setVisible(true);
-        dispose(); // Close current login screen
+        // Close the login screen
+        dispose();
+        // Reopen the splash screen
+        SplashScreenView.reopenSplashScreen();
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             // Instantiate the LoginView with a role (Example: "BRANCHMANAGER")
             new LoginView("BranchManager").setVisible(true);
-        });
-    }
+   });
+}
 }

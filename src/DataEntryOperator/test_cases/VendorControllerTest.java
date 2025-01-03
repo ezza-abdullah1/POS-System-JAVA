@@ -61,4 +61,65 @@ public class VendorControllerTest {
             stmt.executeUpdate("DELETE FROM vendors WHERE vendor_name = '" + name + "'");
         }
     }
+
+    @Test
+    public void testUpdateVendor_Success() throws SQLException {
+        // Arrange
+        String originalName = "Original Vendor";
+        String originalAddress = "456 Original Street";
+        String originalContact = "9876543210";
+        String updatedName = "Updated Vendor";
+        String updatedAddress = "789 Updated Street";
+        String updatedContact = "0123456789";
+
+        vendorController.addVendor(originalName, originalAddress, originalContact);
+
+        int vendorId;
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt
+                        .executeQuery("SELECT vendor_id FROM vendors WHERE vendor_name = '" + originalName + "'")) {
+            assertTrue(rs.next(), "Test vendor should exist in the database.");
+            vendorId = rs.getInt("vendor_id");
+        }
+
+        vendorController.updateVendor(vendorId, updatedName, updatedAddress, updatedContact);
+
+        // Assert
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM vendors WHERE vendor_id = " + vendorId)) {
+            assertTrue(rs.next(), "Updated vendor should exist in the database.");
+            assertEquals(updatedName, rs.getString("vendor_name"));
+            assertEquals(updatedAddress, rs.getString("vendor_address"));
+            assertEquals(updatedContact, rs.getString("contact_no"));
+        }
+
+        vendorController.deleteVendor(vendorId);
+    }
+
+    @Test
+    public void testDeleteVendor_Success() throws SQLException {
+        String name = "Vendor To Delete";
+        String address = "123 Delete Street";
+        String contact = "1234567890";
+
+        vendorController.addVendor(name, address, contact);
+
+        int vendorId;
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT vendor_id FROM vendors WHERE vendor_name = '" + name + "'")) {
+            assertTrue(rs.next(), "Vendor to delete should exist in the database.");
+            vendorId = rs.getInt("vendor_id");
+        }
+
+        vendorController.deleteVendor(vendorId);
+
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM vendors WHERE vendor_id = " + vendorId)) {
+            assertFalse(rs.next(), "Vendor should be deleted from the database.");
+        }
+    }
 }

@@ -24,16 +24,21 @@ public class LoginDAO {
 
             if (rs.next()) {
                 UserModel UserModel = new UserModel();
-                UserModel.setUserID(rs.getInt("UserID"));
+                int UserId=rs.getInt("UserID");
+                int BranchCode=rs.getInt("BranchCode");
+                // UserModel.setUserID(rs.getInt("UserID"));
+                UserModel.setUserID(UserId);
                 UserModel.setName(rs.getString("Name"));
                 UserModel.setEmail(rs.getString("Email"));
                 UserModel.setPassword(rs.getString("Password"));
                 UserModel.setRole(rs.getString("Role"));
-                UserModel.setBranchCode(rs.getInt("BranchCode"));
+                // UserModel.setBranchCode(rs.getInt("BranchCode"));
+                UserModel.setBranchCode(BranchCode);
                 UserModel.setSalary(rs.getDouble("Salary"));
                 UserModel.setEmpNumber(rs.getInt("EmpNumber"));
                 UserModel.setCreatedAt(rs.getTimestamp("CreatedAt"));
                 UserModel.setUpdatedAt(rs.getTimestamp("UpdatedAt"));
+                UserModel.setLoggedInUser(UserId, BranchCode);
                 return UserModel;
             }
         } catch (SQLException e) {

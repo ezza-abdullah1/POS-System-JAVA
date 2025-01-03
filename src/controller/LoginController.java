@@ -1,6 +1,7 @@
 package controller;
 
 import model.UserModel;
+import view.CashierView;
 import view.LoginView;
 import view.ChangePasswordView;
 import dao.LoginDAO;
@@ -17,6 +18,7 @@ import java.util.regex.Pattern;
 public class LoginController {
     private LoginView loginView;
     private LoginDAO loginDAO;
+    private boolean passwordChanged = false;
 
     public LoginController(LoginView loginView, LoginDAO loginDAO) {
         this.loginView = loginView;
@@ -43,7 +45,7 @@ public class LoginController {
             if ("123".equals(password)) {
                 showChangePasswordScreen(email);
             } else {
-                navigateToDashboard(role);
+                navigateToDashboard(user);
                 loginView.dispose();
             }
         } else {
@@ -64,14 +66,18 @@ public class LoginController {
                 if (!newPassword.equals(confirmPassword)) {
                     JOptionPane.showMessageDialog(changePasswordView, "Passwords do not match!");
                 } else if (!isValidPassword(newPassword)) {
-                    JOptionPane.showMessageDialog(changePasswordView, "Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.");
+                    JOptionPane.showMessageDialog(changePasswordView,
+                            "Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.");
                 } else {
                     boolean isUpdated = loginDAO.updatePassword(email, newPassword);
                     if (isUpdated) {
-                        JOptionPane.showMessageDialog(changePasswordView, "Password changed successfully!");
+                        JOptionPane.showMessageDialog(changePasswordView,
+                                "Password changed successfully! Please Re-Enter Your New Password to Login.");
+                        passwordChanged = true; // Set flag to true after password change
                         changePasswordView.dispose();
                     } else {
-                        JOptionPane.showMessageDialog(changePasswordView, "Failed to update password. Please try again.");
+                        JOptionPane.showMessageDialog(changePasswordView,
+                                "Failed to update password. Please try again.");
                     }
                 }
             }
@@ -89,20 +95,27 @@ public class LoginController {
         return upperCasePattern.matcher(password).find() && specialCharacterPattern.matcher(password).find();
     }
 
-
-    private void navigateToDashboard(String role) {
+    private void navigateToDashboard(UserModel user) {
+        String role = user.getRole();
+        int branchCode = user.getBranchCode();
         switch (role) {
             case "SuperAdmin":
-                 new dashboard();
+                new dashboard();
                 break;
             case "BranchManager":
-                new DashboardBR();
+                new DashboardBR(branchCode); // Pass BranchCode to the dashboard
                 break;
             case "Cashier":
-                // new CashierDashboard().setVisible(true);
+                SwingUtilities.invokeLater(() -> {
+                    CashierView view = new CashierView();
+                    CashierController controller = new CashierController(view);
+                    view.setVisible(true);
+                });
                 break;
             case "DataEntryOperator":
-                new MainDashboard();
+                SwingUtilities.invokeLater(() -> {
+                    new MainDashboard();
+                });
                 break;
             default:
                 JOptionPane.showMessageDialog(loginView, "Role not found!");

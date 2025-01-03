@@ -12,13 +12,14 @@ public class ProductDAO {
         this.dbConnection = DatabaseConnection.getInstance();
     }
 
+    @SuppressWarnings("static-access")
     public Product getProductById(String productId) throws SQLException {
         String productQuery = "SELECT p.name, p.category, p.original_price, p.sale_price, p.price_by_unit, " +
                 "p.price_by_carton, p.tax, p.weight, p.quantity, COALESCE(d.discount, 0) as discount " +
                 "FROM Product p LEFT JOIN Discount d ON p.product_id = d.product_id " +
                 "WHERE p.product_id = ?";
 
-        try (Connection conn = dbConnection.getConnection();
+        try (Connection conn = dbConnection.GETConnection();
              PreparedStatement stmt = conn.prepareStatement(productQuery)) {
 
             stmt.setString(1, productId);
@@ -45,7 +46,8 @@ public class ProductDAO {
 
     public boolean updateProductQuantity(String productId, int quantity) throws SQLException {
         String updateQuery = "UPDATE Product SET quantity = quantity - ? WHERE product_id = ? AND quantity >= ?";
-        try (Connection conn = dbConnection.getConnection();
+        try (@SuppressWarnings("static-access")
+        Connection conn = dbConnection.GETConnection();
              PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
 
             stmt.setInt(1, quantity);
@@ -59,7 +61,7 @@ public class ProductDAO {
     public boolean addNewProduct(Product product) throws SQLException {
         String insertQuery = "INSERT INTO Product (product_id, vendor_id, name, category, original_price, sale_price, " +
                 "price_by_unit, price_by_carton, tax, weight, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = dbConnection.getConnection();
+        try (Connection conn = dbConnection.GETConnection();
              PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
 
             stmt.setString(1, product.getProductId());
@@ -81,7 +83,8 @@ public class ProductDAO {
     public boolean updateProductDetails(Product product) throws SQLException {
         String updateQuery = "UPDATE Product SET vendor_id = ?, name = ?, category = ?, original_price = ?, sale_price = ?, " +
                 "price_by_unit = ?, price_by_carton = ?, tax = ?, weight = ?, quantity = ? WHERE product_id = ?";
-        try (Connection conn = dbConnection.getConnection();
+        try (@SuppressWarnings("static-access")
+        Connection conn = dbConnection.GETConnection();
              PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
 
             stmt.setInt(1, product.getVendorId());
@@ -102,7 +105,8 @@ public class ProductDAO {
 
     public boolean deleteProductById(String productId) throws SQLException {
         String deleteQuery = "DELETE FROM Product WHERE product_id = ?";
-        try (Connection conn = dbConnection.getConnection();
+        try (@SuppressWarnings("static-access")
+        Connection conn = dbConnection.GETConnection();
              PreparedStatement stmt = conn.prepareStatement(deleteQuery)) {
 
             stmt.setString(1, productId);
@@ -111,7 +115,8 @@ public class ProductDAO {
         }
     }
     public boolean processCardPayment(String cardNumber, String securityCode, double amount) throws SQLException {
-        try (Connection conn = dbConnection.getConnection()) {
+        try (@SuppressWarnings("static-access")
+        Connection conn = dbConnection.GETConnection()) {
             conn.setAutoCommit(false);
             try {
                 String cardQuery = "SELECT balance FROM Card WHERE card_number = ? AND security_code = ? FOR UPDATE";
@@ -146,7 +151,8 @@ public class ProductDAO {
 
     public void addPointsToMetroCard(String cardNumber, int points) throws SQLException {
         String query = "UPDATE MetroCard SET points = points + ? WHERE metCrdNum = ?";
-        try (Connection conn = dbConnection.getConnection();
+        try (@SuppressWarnings("static-access")
+        Connection conn = dbConnection.GETConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, points);
             stmt.setString(2, cardNumber);
@@ -155,7 +161,7 @@ public class ProductDAO {
     }
 
     public double processMetroCardPayment(String cardNumber, double amount) throws SQLException {
-        try (Connection conn = dbConnection.getConnection()) {
+        try (Connection conn = dbConnection.GETConnection()) {
             conn.setAutoCommit(false);
             try {
                 String cardQuery = "SELECT points FROM MetroCard WHERE metCrdNum = ? FOR UPDATE";

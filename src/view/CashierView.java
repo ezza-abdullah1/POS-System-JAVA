@@ -7,6 +7,7 @@ import javax.swing.table.JTableHeader;
 
 import controller.CashierController;
 import dao.ProductDAO;
+import model.UserModel;
 import utils.ButtonUtils;
 import utils.MetroCardPaymentCallback;
 
@@ -23,8 +24,8 @@ public class CashierView extends JFrame {
     private JLabel branchNTNLabel, cashierIdLabel, billingIdLabel, dateTimeLabel;
     private Timer dateTimeTimer;
     private MetroCardPaymentCallback metroCardPaymentCallback;
-    private JButton addItemButton, updateButton, deleteButton, checkoutButton;
-    private  int brnchlbl=1;
+    private JButton addItemButton, updateButton, deleteButton, checkoutButton,paymentButton;
+    private  int brnchlbl;
     private JTable cartTable;
     private DefaultTableModel cartTableModel;
     private JLabel subtotalLabel;
@@ -35,6 +36,8 @@ public class CashierView extends JFrame {
     private JLabel changeLabel;
     private JPanel rightPanel;
     private JLabel remainingBalanceLabel;
+    public static int code;
+    public static  int id;    
     private static final String[] COLUMN_NAMES = {
             "Product ID", "Product Name", "Price", "Weight",
             "Discount Amount", "Tax Amount", "Quantity", "Subtotal"
@@ -48,7 +51,7 @@ public class CashierView extends JFrame {
 
 
     public CashierView() {
-        setTitle("Modern POS System");
+        setTitle("Cashier Screen");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 800);
         setLayout(new BorderLayout(10, 10));
@@ -64,18 +67,16 @@ public class CashierView extends JFrame {
         getRootPane().setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
 
-    private void initializeHeaderComponents() {
 
+     
+    private void initializeHeaderComponents() {
         // Initialize header labels with modern styling
-        branchNTNLabel = createHeaderLabel("Branch Code: "+brnchlbl);
-        cashierIdLabel = createHeaderLabel("Cashier ID: CASH001");
+        branchNTNLabel = createHeaderLabel("Branch Code: "+ UserModel.getLoggedInBranchCode());
+        cashierIdLabel = createHeaderLabel("Cashier ID: "+ UserModel.getLoggedInUserId());
         billingIdLabel = createHeaderLabel("Bill #: INV" + generateBillNumber());
         dateTimeLabel = createHeaderLabel(getCurrentDateTime());
     }
-    public int getBranchCode()
-    {
-        return brnchlbl;
-    }
+   
 
 
     private JLabel createHeaderLabel(String text) {
@@ -102,7 +103,10 @@ public class CashierView extends JFrame {
         });
         dateTimeTimer.start();
     }
-
+    public int getBranchCode()
+    {
+        return UserModel.getLoggedInBranchCode();
+    }
 
     @Override
     public void dispose() {
@@ -152,6 +156,7 @@ public class CashierView extends JFrame {
         metroCardButton = createStyledButton("Pay with Metro Card", new Color(79, 70, 229));
         metroCardButton.setVisible(true); // Initially hidden until checkout
         checkoutButton = createStyledButton("Checkout", new Color(46, 204, 113));
+        paymentButton=createStyledButton("Card Payment",new Color(230, 179, 10));
 
         // Initialize table with modern styling
         initializeTable();
@@ -244,23 +249,23 @@ public class CashierView extends JFrame {
             }
         };
 
-        // Set preferred column widths (1 cm ≈ 38 pixels)
-        int[] columnWidths = {138, 138, 138, 138, 138, 138, 138, 138};
+         // Set preferred column widths (1 cm ≈ 38 pixels)
+        int[] columnWidths = {50, 70, 50, 50, 50, 50, 50, 50};
         for (int i = 0; i < columnWidths.length; i++) {
             cartTable.getColumnModel().getColumn(i).setPreferredWidth(columnWidths[i]);
             cartTable.getColumnModel().getColumn(i).setMinWidth(columnWidths[i]);
         }
 
-        cartTable.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        cartTable.setRowHeight(40);
-        cartTable.setIntercellSpacing(new Dimension(20, 0));
-        cartTable.setShowGrid(false);
-        cartTable.setShowHorizontalLines(true);
+        cartTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        cartTable.setRowHeight(30);
+        cartTable.setIntercellSpacing(new Dimension(10, 10));
+        cartTable.setShowGrid(true);
+        cartTable.setShowHorizontalLines(false);
         cartTable.setGridColor(new Color(229, 231, 235));
         cartTable.setOpaque(false);
 
         JTableHeader header = cartTable.getTableHeader();
-        header.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 14));
+        header.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 10));
         header.setBackground(new Color(255, 255, 255, 200));
         header.setForeground(TEXT_COLOR);
         header.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, ACCENT_COLOR));
@@ -429,6 +434,7 @@ public class CashierView extends JFrame {
         topPanel.add(addItemButton);
         topPanel.add(updateButton);
         topPanel.add(deleteButton);
+        topPanel.add(paymentButton);
 
         // Combine header and top panel
         JPanel combinedTopPanel = new JPanel(new BorderLayout());
@@ -536,8 +542,7 @@ public class CashierView extends JFrame {
     }
 
     public void setPaymentListener(ActionListener listener) {
-        JButton paymentButton = ButtonUtils.createButton("Payment", listener);
-        ((JPanel) getContentPane().getComponent(2)).add(paymentButton); // Add to right panel
+        paymentButton.addActionListener(listener);
     }
 
     @FunctionalInterface

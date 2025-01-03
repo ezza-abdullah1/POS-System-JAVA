@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.border.EmptyBorder;
+
+import model.UserModel;
 import utils.RoundedButton;
 
 public class DashboardBR {
@@ -15,8 +17,10 @@ public class DashboardBR {
     private Color primaryColor = new Color(0, 86, 179);
     private Color hoverColor = new Color(0, 106, 199);
     private Color backgroundColor = new Color(245, 245, 245);
+    private int branchCode;
 
-    public DashboardBR() {
+    public DashboardBR(int branchCode) {
+        this.branchCode=branchCode;
         initializeFrame();
         createContentPanel();
         frame.setVisible(true);
@@ -82,14 +86,18 @@ public class DashboardBR {
         welcomeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel roleLabel = new JLabel("Branch Manager");
+        JLabel roleLabel = new JLabel("Branch Manager\n Branch NTN "+UserModel.getLoggedInBranchCode());
         roleLabel.setFont(new Font("Segoe UI", Font.BOLD, 32));
         roleLabel.setForeground(primaryColor);
         roleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+
+
         panel.add(welcomeLabel);
+
         panel.add(Box.createVerticalStrut(10));
         panel.add(roleLabel);
+        panel.setBackground(Color.lightGray);
 
         return panel;
     }
@@ -102,13 +110,13 @@ public class DashboardBR {
         panel.add(createActionCard(
                 "Manage Cashiers",
                 "Add, remove, or modify cashier accounts",
-                e -> new CashierView()  // CashierView should not have overlay
+                e -> new CashierView(branchCode)  // CashierView should not have overlay
         ));
 
         panel.add(createActionCard(
                 "Manage Data Entry Operators",
                 "Manage DEO accounts and permissions",
-                e -> new DEO_View()  // DEO_View should not have overlay
+                e -> new DEO_View(branchCode)  // DEO_View should not have overlay
         ));
 
         panel.add(createActionCard(
@@ -230,13 +238,13 @@ public class DashboardBR {
 
         return button;
     }
-    
+
     public static void main(String[] args) {
-        // try {
-        //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        // } catch (Exception e) {
-        //     e.printStackTrace();
-        // }
-        SwingUtilities.invokeLater(DashboardBR::new);
-    }
+//      /*  // try {
+//        //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//        // } catch (Exception e) {
+//        //     e.printStackTrace();
+//        // }
+//        // SwingUtilities.invokeLater(DashboardBR(101)::new);*/
+}
 }

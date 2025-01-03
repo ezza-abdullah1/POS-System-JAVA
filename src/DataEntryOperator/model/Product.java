@@ -9,7 +9,7 @@ public class Product {
     private double priceByCarton;
 
     public Product(String productName, String category, double originalPrice, double salePrice, double priceByUnit,
-            double priceByCarton) {
+                   double priceByCarton) {
         this.productName = productName;
         this.category = category;
         this.originalPrice = originalPrice;

@@ -7,12 +7,12 @@ import java.sql.PreparedStatement;
 
 public class ProductController {
     public void addProduct(String productId, int vendorId, String name, String category, double originalPrice,
-            double salePrice, double priceByUnit, double priceByCarton, double tax, double weight,
-            int quantity) {
+                           double salePrice, double priceByUnit, double priceByCarton, double tax, double weight,
+                           int quantity) {
         String query = "INSERT INTO Product (product_id, vendor_id, name, category, original_price, sale_price, price_by_unit, price_by_carton, tax, weight, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DatabaseConnection.getInstance().getConnection();
-                PreparedStatement statement = connection.prepareStatement(query)) {
+        try (Connection connection = DatabaseConnection.GETConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setString(1, productId);
             statement.setInt(2, vendorId);

@@ -1,0 +1,9 @@
+====== BILL ======
+Date: Sat Nov 30 00:02:56 PKT 2024
+
+Items:
+
+Subtotal: Rs.00
+Discount: Rs.00
+Tax: Rs.00
+Total: Rs.00

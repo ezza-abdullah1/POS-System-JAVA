@@ -56,39 +56,26 @@ public class branchView extends JFrame {
         sidePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Search Panel moved to the right
-JPanel searchPanel = new JPanel();
-searchPanel.setLayout(new FlowLayout(FlowLayout.RIGHT)); // Align to the right
-searchPanel.setBackground(new Color(70, 130, 160));
-searchPanel.setPreferredSize(new Dimension(250, 50)); // Increase size
-        // // Search Panel
-        // JPanel searchPanel = new JPanel();
-        // searchPanel.setLayout(new FlowLayout());
-        // searchPanel.setBackground(new Color(70, 130, 160));
+        JPanel searchPanel = new JPanel();
+        searchPanel.setLayout(new FlowLayout(FlowLayout.RIGHT)); // Align to the right
+        searchPanel.setBackground(new Color(70, 130, 160));
+        searchPanel.setPreferredSize(new Dimension(250, 50)); // Increase size
 
         JLabel searchLabel = new JLabel("Search:");
         searchLabel.setForeground(Color.WHITE);
         searchLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
 
         searchField = new JTextField(20);
-searchField.setToolTipText("Search branches...");
-searchField.setFont(new Font("SansSerif", Font.PLAIN, 16)); // Make the font modern
-searchField.setPreferredSize(new Dimension(200, 35)); // Increase width and height
-searchField.setBorder(BorderFactory.createLineBorder(new Color(70, 130, 180), 2)); // Modern border
-searchField.addKeyListener(new KeyAdapter() {
-    @Override
-    public void keyReleased(KeyEvent e) {
-        filterTable(searchField.getText());
-    }
-});
-
-        // searchField = new JTextField(20);
-        // searchField.setToolTipText("Search branches...");
-        // searchField.addKeyListener(new KeyAdapter() {
-        //     @Override
-        //     public void keyReleased(KeyEvent e) {
-        //         filterTable(searchField.getText());
-        //     }
-        // });
+        searchField.setToolTipText("Search branches...");
+        searchField.setFont(new Font("SansSerif", Font.PLAIN, 16)); // Make the font modern
+        searchField.setPreferredSize(new Dimension(200, 35)); // Increase width and height
+        searchField.setBorder(BorderFactory.createLineBorder(new Color(70, 130, 180), 2)); // Modern border
+        searchField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                filterTable(searchField.getText());
+            }
+        });
 
         searchPanel.add(searchLabel);
         searchPanel.add(searchField);
@@ -100,7 +87,7 @@ searchField.addKeyListener(new KeyAdapter() {
         deleteButton = new RoundedButton("Delete Branch");
         viewButton = new RoundedButton("View All Branches");
 
-        RoundedButton[] buttons = {addButton, updateButton, activateButton, deleteButton, viewButton};
+        RoundedButton[] buttons = { addButton, updateButton, activateButton, deleteButton, viewButton };
         setButtonProperties(buttons);
 
         for (RoundedButton button : buttons) {
@@ -109,24 +96,24 @@ searchField.addKeyListener(new KeyAdapter() {
 
         // Table
         tableModel = new DefaultTableModel(
-                new String[]{"BranchCode", "BranchName", "City", "Address", "Phone", "NumEmployees", "IsActive"},
+                new String[] { "BranchCode", "BranchName", "City", "Address", "Phone", "NumEmployees", "IsActive" },
                 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        
+
         branchTable = new JTable(tableModel);
         branchTable.setFillsViewportHeight(true);
         branchTable.setRowHeight(25);
-        
+
         JTableHeader tableHeader = branchTable.getTableHeader();
         tableHeader.setFont(new Font("SansSerif", Font.BOLD, 20));
         tableHeader.setBackground(new Color(25, 25, 130));
         tableHeader.setForeground(Color.WHITE);
         branchTable.setTableHeader(tableHeader);
-        
+
         JScrollPane scrollPane = new JScrollPane(branchTable);
 
         // Layout assembly
@@ -157,8 +144,8 @@ searchField.addKeyListener(new KeyAdapter() {
             button.setBackground(new Color(70, 130, 180));
             button.setForeground(Color.WHITE);
             button.setFocusPainted(false);
-            button.setPreferredSize(new Dimension(button.getPreferredSize().width, 
-                button.getPreferredSize().height - 28));
+            button.setPreferredSize(new Dimension(button.getPreferredSize().width,
+                    button.getPreferredSize().height - 28));
         }
     }
 

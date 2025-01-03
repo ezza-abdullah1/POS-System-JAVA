@@ -1,1 +1,81 @@
-
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "Main",
+      "projectName": "metro_787a100a"
+    },
+    {
+      "type": "java",
+      "name": "MainDashboard",
+      "request": "launch",
+      "mainClass": "DataEntryOperator.view.MainDashboard",
+      "projectName": "metro_2428179d"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "Main",
+      "projectName": "metro_2428179d"
+    },
+    {
+      "type": "java",
+      "name": "dashboard",
+      "request": "launch",
+      "mainClass": "SuperAdmin.view.dashboard",
+      "projectName": "SCDProj_1e6616f5"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "Main",
+      "projectName": "SCDProj_1e6616f5"
+    },
+    {
+      "type": "java",
+      "name": "CashierView",
+      "request": "launch",
+      "mainClass": "view.CashierView",
+      "projectName": "Projects_e646fa13"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "Main",
+      "projectName": "Projects_e646fa13"
+    },
+    {
+      "type": "java",
+      "name": "LoginController",
+      "request": "launch",
+      "mainClass": "controller.LoginController",
+      "projectName": "Projects_e646fa13"
+    },
+    {
+      "type": "java",
+      "name": "ChangePasswordView",
+      "request": "launch",
+      "mainClass": "view.ChangePasswordView",
+      "projectName": "Projects_e646fa13"
+    },
+    {
+      "type": "java",
+      "name": "AddVendorPanel",
+      "request": "launch",
+      "mainClass": "DataEntryOperator.view.AddVendorPanel",
+      "projectName": "Projects_e646fa13"
+    },
+    {
+      "type": "java",
+      "name": "MainDashboard",
+      "request": "launch",
+      "mainClass": "DataEntryOperator.view.MainDashboard",
+      "projectName": "Projects_e646fa13"
+    }
+  ]
+}

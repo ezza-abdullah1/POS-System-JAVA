@@ -14,11 +14,14 @@ public class UserController {
         userModel = new UserModel(); // Assume UserModel handles the data manipulation
     }
 
+
+
     // Load user data based on role into the view
-    public void loadUserDataToView(JTable viewTable, String role) {
+    public void loadUserDataToView(JTable viewTable,int branchCode, String role) {
         try {
             // Fetch data based on role from the model
-            List<UserModel> users = userModel.getAllUsersByRole(role);
+
+            List<UserModel> users = userModel.getUserByBranchCodeAndRole(branchCode,role);
 
             // Clear the table before adding new data
             DefaultTableModel model = (DefaultTableModel) viewTable.getModel();
@@ -67,7 +70,7 @@ public class UserController {
             return "Error deleting user: " + e.getMessage();
         }
     }
-    
+
 
     // Get user data based on branch code and role
     public String[] getUserByEmailAndRole(String email, String role) {
@@ -82,6 +85,5 @@ public class UserController {
     // Set the UserModel for the controller (for dependency injection)
     public void setUserModel(UserModel userModel) {
         this.userModel = userModel;
-    }
 }
-
+}

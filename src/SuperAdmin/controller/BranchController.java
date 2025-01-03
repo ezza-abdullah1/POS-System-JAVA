@@ -28,22 +28,13 @@ public class BranchController {
         }
     }
 
-    public void loadActiveBranchesToView(AddUserView view) {
-        // Get active branch codes from BranchModel and load them into the view
-        List<Integer> activeBranchCodes = BranchModel.getActiveBranchCodes();
-
-        // Add active branches to the combo box in the view
-        for (Integer branchCode : activeBranchCodes) {
-            view.addBranchToComboBox("Branch " + branchCode, branchCode);
-        }
-    }
 
     public List<BranchModel> getAllBranches() {
         return BranchModel.getAllBranches();
     }
 
     public String saveBranch(String branchCode, String branchName, String city, String address, String phone,
-            int numEmployees, boolean isActive) {
+                             int numEmployees, boolean isActive) {
         try {
             BranchModel branch = new BranchModel(branchCode, branchName, city, address, phone, numEmployees, isActive);
             BranchModel.saveBranch(branch); // Assuming this method exists in the BranchModel class
@@ -58,7 +49,7 @@ public class BranchController {
     }
 
     public void updateBranch(String branchCode, String name, String city, String address, String phone,
-            int numEmployees, boolean isActive) {
+                             int numEmployees, boolean isActive) {
         try {
             BranchModel branch = BranchModel.findBranchByCode(branchCode); // Fetch branch
             if (branch == null) {
@@ -116,7 +107,7 @@ public class BranchController {
             return "Branch status updated successfully.";
         } catch (Exception e) {
             return "Error: " + e.getMessage();
-        }
-    }
+  }
+}
 
 }

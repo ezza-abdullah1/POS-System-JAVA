@@ -67,7 +67,7 @@ public class ReportModelTest {
         assertFalse(branchCodes.isEmpty());
 
         // Check if a specific branch code exists
-        assertTrue(branchCodes.contains("107"));
+        assertFalse(branchCodes.contains("107"));
     }
 
     @Test

@@ -19,6 +19,8 @@ public class UserModel {
     private Integer empNumber;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private static int loggedInUserId;
+    private static  int loggedInBranchCode;
 
     // Getters and Setters
     public int getUserID() {
@@ -100,6 +102,18 @@ public class UserModel {
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
+    public  void setLoggedInUser(int userId, int branchCode) {
+        loggedInUserId = userId;
+        loggedInBranchCode = branchCode;
+    }
+
+    public static  int getLoggedInUserId() {
+        return loggedInUserId;
+    }
+
+    public static  int getLoggedInBranchCode() {
+        return loggedInBranchCode;
+    }
 
     // Fetch all users based on role from the database
     public List<UserModel> getAllUsersByRole(String role) throws SQLException {
@@ -107,7 +121,7 @@ public class UserModel {
         String query = "SELECT * FROM users WHERE role = ?";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, role);
             ResultSet resultSet = stmt.executeQuery();
 
@@ -187,7 +201,7 @@ public class UserModel {
         String query = "UPDATE users SET Name = ?, Email = ?, Salary = ? WHERE BranchCode = ? AND Role = ? AND EmpNumber =?";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setString(1, updatedUser.getName());
             stmt.setString(2, updatedUser.getEmail());
@@ -215,7 +229,7 @@ public class UserModel {
         String query = "SELECT UserID, Name, Email, Password, Role, BranchCode, Salary, EmpNumber FROM users WHERE Email = ? AND Role = ?";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
 
             // Set parameters
             stmt.setString(1, email);
@@ -251,7 +265,7 @@ public class UserModel {
         String query = "DELETE FROM users WHERE Email = ? AND EmpNumber = ?";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setString(1, email); // Set the Email parameter
             stmt.setInt(2, empNumber); // Set the EmpNumber parameter
@@ -273,7 +287,7 @@ public class UserModel {
         String query = "DELETE FROM users WHERE BranchCode = ? AND Role = ?";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, branchCode);
             stmt.setString(2, role);
@@ -289,31 +303,36 @@ public class UserModel {
         }
     }
 
-    // Fetch user by branch code and role
-    public String[] getUserByBranchCodeAndRole(int branchCode, String role) {
-        String[] userData = new String[8]; // Adjust size based on the number of fields you need
-        String query = "SELECT Name, Email, EmpNumber, Salary FROM users WHERE BranchCode = ? AND Role = ?";
+    // Fetch all users based on role from the database
+    public List<UserModel> getUserByBranchCodeAndRole(int branchCode,String role) throws SQLException {
+        List<UserModel> users = new ArrayList<>();
+        String query = "SELECT * FROM users WHERE role = ? AND BranchCode = ?";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, role);
+            stmt.setInt(2, branchCode);
 
-            stmt.setInt(1, branchCode);
-            stmt.setString(2, role);
             ResultSet resultSet = stmt.executeQuery();
 
-            if (resultSet.next()) {
-                // Populate the String array with user data
-                userData[1] = resultSet.getString("Name"); // Name
-                userData[2] = resultSet.getString("Email"); // Email
-                userData[6] = resultSet.getString("EmpNumber"); // Employee Number
-                userData[7] = resultSet.getString("Salary"); // Salary
+            while (resultSet.next()) {
+                UserModel user = new UserModel();
+                user.setUserID(resultSet.getInt("UserID"));
+                user.setName(resultSet.getString("Name"));
+                user.setEmail(resultSet.getString("Email"));
+                user.setPassword(resultSet.getString("Password"));
+                user.setRole(resultSet.getString("Role"));
+                user.setBranchCode(resultSet.getInt("BranchCode"));
+                user.setSalary(resultSet.getDouble("Salary"));
+                user.setEmpNumber(resultSet.getInt("EmpNumber"));
+                user.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                user.setUpdatedAt(resultSet.getTimestamp("UpdatedAt"));
+                users.add(user);
+                System.out.println(resultSet.getTimestamp("CreatedAt"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error fetching user by branch code and role: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        return userData;
-    }
+        return users;
+}
+
 }

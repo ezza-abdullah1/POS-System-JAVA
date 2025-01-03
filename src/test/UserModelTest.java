@@ -90,4 +90,23 @@ public class UserModelTest {
         assertEquals("User deleted successfully.", result, "User deletion failed.");
     }
 
+    @Test
+    public void testGetUserByBranchCodeAndRole_ValidInputs() throws SQLException {
+        // Arrange: Set up a mock or real test database with known users
+        int branchCode = 101;
+        String role = "Cashier";
+
+        // Act: Call the method to fetch users based on branchCode and role
+        List<UserModel> users = userModel.getUserByBranchCodeAndRole(branchCode, role);
+
+        // Assert: Check that the returned list is not empty and users match the
+        // criteria
+        assertNotNull(users);
+        assertFalse(users.isEmpty());
+        for (UserModel user : users) {
+            assertEquals(branchCode, user.getBranchCode());
+            assertEquals(role, user.getRole());
+        }
+    }
+
 }

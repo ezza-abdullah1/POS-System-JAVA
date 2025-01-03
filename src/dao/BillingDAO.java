@@ -18,7 +18,8 @@ public class BillingDAO {
     public void saveBill(double subtotal, double discount, double tax, double total, String metroCard) throws SQLException {
         String sql = "INSERT INTO billing (subtotal, discount, tax, total, metro_card) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection connection = dbConnection.getConnection();
+        try (@SuppressWarnings("static-access")
+        Connection connection = dbConnection.GETConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setDouble(1, subtotal);

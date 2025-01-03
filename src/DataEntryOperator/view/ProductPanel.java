@@ -12,52 +12,88 @@ public class ProductPanel extends JDialog {
 
     public ProductPanel(int vendorId) {
         super((Frame) null, "Add Product for Vendor ID: " + vendorId, true);
-        setSize(500, 500);
+        setSize(1000, 800);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new GridLayout(12, 2)); // Adjusted for all fields
+        setLayout(new BorderLayout());
 
-        add(new JLabel("Product ID:"));
-        productIdField = new JTextField();
-        add(productIdField);
+        // Create a panel with semi-transparent background
+        JPanel backgroundPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                // Load the background image
+                ImageIcon bgImage = new ImageIcon("src\\imgs\\Screenshot 2024-12-09 032241.jpg");
+                Image image = bgImage.getImage();
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 
-        add(new JLabel("Product Name:"));
-        nameField = new JTextField();
-        add(nameField);
+                // Add semi-transparent overlay
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setColor(new Color(255, 255, 255, 170)); // Semi-transparent white
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                g2d.dispose();
+            }
+        };
+        backgroundPanel.setLayout(new GridBagLayout());
+        add(backgroundPanel);
 
-        add(new JLabel("Category:"));
-        categoryField = new JTextField();
-        add(categoryField);
+        // Form panel
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setOpaque(false); // Transparent background
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(15, 15, 15, 15); // Spacing
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        add(new JLabel("Original Price:"));
-        originalPriceField = new JTextField();
-        add(originalPriceField);
+        // Add fields to form panel
+        addField(formPanel, gbc, 0, "Product ID:", productIdField = createTextField());
+        addField(formPanel, gbc, 1, "Product Name:", nameField = createTextField());
+        addField(formPanel, gbc, 2, "Category:", categoryField = createTextField());
+        addField(formPanel, gbc, 3, "Original Price:", originalPriceField = createTextField());
+        addField(formPanel, gbc, 4, "Sale Price:", salePriceField = createTextField());
+        addField(formPanel, gbc, 5, "Price by Unit:", unitPriceField = createTextField());
+        addField(formPanel, gbc, 6, "Price by Carton:", cartonPriceField = createTextField());
+        addField(formPanel, gbc, 7, "Tax (%):", taxField = createTextField());
+        addField(formPanel, gbc, 8, "Weight:", weightField = createTextField());
+        addField(formPanel, gbc, 9, "Quantity:", quantityField = createTextField());
 
-        add(new JLabel("Sale Price:"));
-        salePriceField = new JTextField();
-        add(salePriceField);
+        // Save button
+        gbc.gridx = 1;
+        gbc.gridy = 10;
+        saveButton = createButton("Save Product");
+        formPanel.add(saveButton, gbc);
 
-        add(new JLabel("Price by Unit:"));
-        unitPriceField = new JTextField();
-        add(unitPriceField);
+        backgroundPanel.add(formPanel);
+    }
 
-        add(new JLabel("Price by Carton:"));
-        cartonPriceField = new JTextField();
-        add(cartonPriceField);
+    private void addField(JPanel panel, GridBagConstraints gbc, int y, String labelText, JTextField field) {
+        gbc.gridx = 0;
+        gbc.gridy = y;
+        panel.add(createLabel(labelText), gbc);
 
-        add(new JLabel("Tax (%):"));
-        taxField = new JTextField();
-        add(taxField);
+        gbc.gridx = 1;
+        panel.add(field, gbc);
+    }
 
-        add(new JLabel("Weight:"));
-        weightField = new JTextField();
-        add(weightField);
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("Segoe UI", Font.BOLD, 26)); // Larger font size
+        return label;
+    }
 
-        add(new JLabel("Quantity:"));
-        quantityField = new JTextField();
-        add(quantityField);
+    private JTextField createTextField() {
+        JTextField textField = new JTextField(25); // Larger text field
+        textField.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        return textField;
+    }
 
-        saveButton = new JButton("Save Product");
-        add(saveButton);
+    private JButton createButton(String text) {
+        JButton button = new JButton(text);
+        button.setFocusPainted(false);
+        button.setFont(new Font("Segoe UI", Font.BOLD, 23));
+        button.setBackground(new Color(0, 102, 204));
+        button.setForeground(Color.WHITE);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return button;
     }
 
     // Getters for all fields

@@ -1,10 +1,8 @@
 package view;
 
 import javax.swing.*;
-
 import controller.LoginController;
 import dao.LoginDAO;
-
 import java.awt.*;
 import utils.RoundedButton;
 import java.util.Timer;
@@ -103,25 +101,25 @@ public class SplashScreenView {
         RoundedButton superAdminButton = new RoundedButton("Super Admin");
         superAdminButton.addActionListener(e -> {
             selectedRole = "SuperAdmin";
-            SwingUtilities.invokeLater(SplashScreenView::launchLoginScreen);
+            SwingUtilities.invokeLater(() -> launchLoginScreen(roleFrame));
         });
 
         RoundedButton branchManagerButton = new RoundedButton("Branch Manager");
         branchManagerButton.addActionListener(e -> {
             selectedRole = "BranchManager";
-            SwingUtilities.invokeLater(SplashScreenView::launchLoginScreen);
+            SwingUtilities.invokeLater(() -> launchLoginScreen(roleFrame));
         });
 
         RoundedButton cashierButton = new RoundedButton("Cashier");
         cashierButton.addActionListener(e -> {
             selectedRole = "Cashier";
-            SwingUtilities.invokeLater(SplashScreenView::launchLoginScreen);
+            SwingUtilities.invokeLater(() -> launchLoginScreen(roleFrame));
         });
 
         RoundedButton deoButton = new RoundedButton("Data Entry Operator");
         deoButton.addActionListener(e -> {
             selectedRole = "DataEntryOperator";
-            SwingUtilities.invokeLater(SplashScreenView::launchLoginScreen);
+            SwingUtilities.invokeLater(() -> launchLoginScreen(roleFrame));
         });
 
         panel.add(superAdminButton);
@@ -135,10 +133,16 @@ public class SplashScreenView {
         roleFrame.setVisible(true);
     }
 
-    public static void launchLoginScreen() {
-         LoginView loginView = new LoginView(selectedRole);
+    public static void launchLoginScreen(JFrame roleFrame) {
+        roleFrame.dispose(); // Close the role selection frame
+        LoginView loginView = new LoginView(selectedRole);
         LoginDAO loginDAO = new LoginDAO();
         new LoginController(loginView, loginDAO);
         loginView.setVisible(true);
     }
+
+    // Method to reopen splash screen
+    public static void reopenSplashScreen() {
+        SwingUtilities.invokeLater(SplashScreenView::showSplashScreen);
+}
 }

@@ -106,7 +106,7 @@ public class UserModel {
         List<UserModel> branchManagers = new ArrayList<>();
         String query = "SELECT * FROM users WHERE role = 'BranchManager'";
 
-        try (Connection connection = DatabaseConnection.getInstance().getConnection();
+        try (Connection connection = DatabaseConnection.GETConnection();
                 Statement stmt = connection.createStatement();
                 ResultSet resultSet = stmt.executeQuery(query)) {
 
@@ -135,7 +135,7 @@ public class UserModel {
         String insertQuery = "INSERT INTO users (Name, Email, Password, Role, BranchCode, Salary, EmpNumber) VALUES (?, ?, ?, ?, ?, ?, ?)";
         String updateBranchQuery = "UPDATE branches SET NumEmployees = NumEmployees + 1 WHERE BranchCode = ?";
 
-        try (Connection connection = DatabaseConnection.getInstance().getConnection()) {
+        try (Connection connection = DatabaseConnection.GETConnection()) {
             // Check if a branch manager already exists for the branch code
             try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
                 checkStmt.setInt(1, newBranchManager.getBranchCode());
@@ -181,7 +181,7 @@ public class UserModel {
     public String updateBranchManager(UserModel updatedBranchManager) {
         String query = "UPDATE users SET Name = ?, Email = ?, Salary = ?, EmpNumber = ? WHERE  BranchCode = ? AND Role = ?";
 
-        try (Connection connection = DatabaseConnection.getInstance().getConnection();
+        try (Connection connection = DatabaseConnection.GETConnection();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setString(1, updatedBranchManager.getName());
@@ -207,7 +207,7 @@ public class UserModel {
     public String deleteBranchManagerByCode(int branchCode) {
         String query = "DELETE FROM users WHERE BranchCode = ? AND Role = ?";
 
-        try (Connection connection = DatabaseConnection.getInstance().getConnection();
+        try (Connection connection = DatabaseConnection.GETConnection();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, branchCode);
@@ -228,7 +228,7 @@ public class UserModel {
         String[] managerData = new String[8]; // Adjust size based on the number of fields you need
         String query = "SELECT Name, Email, EmpNumber, Salary FROM users WHERE BranchCode = ? AND Role = ?";
 
-        try (Connection connection = DatabaseConnection.getInstance().getConnection();
+        try (Connection connection = DatabaseConnection.GETConnection();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, branchCode); // Assuming branchCode is a String in your system
